@@ -1,16 +1,14 @@
 function hideDropdownsOnHoverAway() 
 {
-  // set up dropdown hide when clicking elsewhere
-  window.addEventListener("click", (event) => {
-    if (!event.target.matches(".save-button")
-      && !event.target.parentElement.matches(".save-button")      
-    ) {
-      var dropdownContents = document.getElementsByClassName("dropdown-content");
-      for (const dropdownContent of dropdownContents) {
-        if (dropdownContent.classList.contains("show")) {
-          dropdownContent.classList.remove("show");
-        }
-      }
+  window.addEventListener("mouseover", (event) => {
+    console.log(event.target);
+    const buttonContainer = event.target.closest(".buttonContainer");
+    if (buttonContainer !== null) {
+      return;
+    }
+    var dropdownContents = document.getElementsByClassName("dropdown-content");
+    for (const dropdownContent of dropdownContents) {
+      dropdownContent.classList.remove("show");
     }
   });
 }
