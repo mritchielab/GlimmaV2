@@ -1,96 +1,60 @@
-function addSavePlotButton(controlContainer, xy_obj, exp_obj=null, 
-  text="Save Plot", summaryText="Summary plot", expressionText="Expression plot") 
+function hideDropdownsOnHoverAway() 
 {
-  // set up button elements
-  var dropdownDiv = document.createElement("div");
-  dropdownDiv.setAttribute("class", "dropdown");
+  window.addEventListener("mouseover", (event) => {
+    console.log(event.target);
+    const buttonContainer = event.target.closest(".buttonContainer");
+    if (buttonContainer !== null) {
+      return;
+    }
+    var dropdownContents = document.getElementsByClassName("dropdown-content");
+    for (const dropdownContent of dropdownContents) {
+      dropdownContent.classList.remove("show");
+    }
+  });
+}
 
-  var dropdownButton = document.createElement("button");
-  dropdownButton.setAttribute("class", "save-button");
-  dropdownButton.innerHTML = text;
+// creates the save plot button
+function addSavePlotElement(xyPlot, expressionPlot=null) {
+  let buttonContainer = document.getElementsByClassName("savePlot")[0].parentElement;
 
-  var dropdownContent = document.createElement("div");
-  dropdownContent.setAttribute("class", "dropdown-content");
-  
-  var pngSummaryBtn = addSaveButtonElement(xy_obj, text=summaryText+" (PNG)", type='png');
-  var svgSummaryBtn = addSaveButtonElement(xy_obj, text=summaryText+" (SVG)", type='svg');
-  
+  var dropdown = document.createElement("div");
+  dropdown.setAttribute("class", "dropdown-content plotDropdown");
+
   // add elements to container
-  dropdownDiv.appendChild(dropdownButton);
-  dropdownDiv.appendChild(dropdownContent);
-
-  dropdownContent.appendChild(pngSummaryBtn);
-  dropdownContent.appendChild(svgSummaryBtn);
+  const createSavePlotButton = (plot, text, type) => {
+    var saveButton = document.createElement("a");
+    saveButton.setAttribute("href", "#");
+    saveButton.innerText = text;
+    saveButton.onclick = function() {
+      plot.toImageURL(type, scaleFactor=3).then(function (url) {
+        var link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('target', '_blank');
+        link.setAttribute('download', 'vega-export.' + type);
+        link.dispatchEvent(new MouseEvent('click'));
+      });
+    };
+    return saveButton;
+  }
+  var pngSummaryBtn = createSavePlotButton(xyPlot, text="Summary plot (PNG)", type='png');
+  var svgSummaryBtn = createSavePlotButton(xyPlot, text="Summary plot (SVG)", type='svg');
+  dropdown.appendChild(pngSummaryBtn);
+  dropdown.appendChild(svgSummaryBtn);
 
   // add the expression buttons if expression plot is active
-  if (exp_obj) {
-    var pngExpressionBtn = addSaveButtonElement(exp_obj, text=expressionText+" (PNG)", type='png');
-    var svgExpressionBtn = addSaveButtonElement(exp_obj, text=expressionText+" (SVG)", type='svg');
-  
-    dropdownContent.appendChild(pngExpressionBtn);
-    dropdownContent.appendChild(svgExpressionBtn);
+  if (expressionPlot) {
+    var pngExpressionBtn = createSavePlotButton(expressionPlot, text="Expression plot (PNG)", type='png');
+    var svgExpressionBtn = createSavePlotButton(expressionPlot, text="Expression plot (SVG)", type='svg');
+    dropdown.appendChild(pngExpressionBtn);
+    dropdown.appendChild(svgExpressionBtn);
   }
 
-  // set up dropdown action
-  dropdownButton.onclick = function() {
-    dropdownOnClick(dropdownContent);
-  };
+  buttonContainer.appendChild(dropdown);
+} 
 
-  controlContainer.appendChild(dropdownDiv);
-
-  // set up dropdown hide when clicking elsewhere
-  // global window.dropdownHide so this event is only added once
-  if (!window.dropdownHide) {
-    function hideDropdowns(event) {
-      if (!event.target.matches(".save-button")) {
-        var dropdowns = document.getElementsByClassName("dropdown-content");
-
-        for (const dropdown_i of dropdowns) {
-          if (dropdown_i.classList.contains("show")) {
-            dropdown_i.classList.remove("show");
-          }
-        }
-      }
-    }
-
-    window.addEventListener("click", hideDropdowns);
-
-    window.dropdownHide = true;
-  }
-}
-
-function dropdownOnClick(dropdownContent) {
-  var dropdowns = document.getElementsByClassName("dropdown-content");
-  for (const dropdown_i of dropdowns){
-    if (dropdown_i.classList.contains("show")) {
-      dropdown_i.classList.remove("show");
-    }
-  }
-  dropdownContent.classList.toggle("show");
-}
-
-function addSaveButtonElement(view_obj, text, type) {
-  // create a save button element for the save dropdown
-  var saveButton = document.createElement("a");
-  saveButton.setAttribute("href", "#");
-  saveButton.innerText = text;
-  saveButton.onclick = function() {
-    view_obj.toImageURL(type, scaleFactor=3).then(function (url) {
-      var link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('target', '_blank');
-      link.setAttribute('download', 'vega-export.' + type);
-      link.dispatchEvent(new MouseEvent('click'));
-    });
-  };
-  return saveButton;
-}
-
+// creates the save data button
 function addSaveDataElement(state, data, saveAllText, saveSelectText) {
   buttonContainer = document.getElementsByClassName("saveSubset")[0].parentElement;
-
-  var dropdownDiv = document.createElement("div");
-  dropdownDiv.setAttribute("class", "dropdown");
 
   var dropdownContent = document.createElement("div");
   dropdownContent.setAttribute("class", "dropdown-content dataDropdown");

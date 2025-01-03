@@ -96,6 +96,7 @@
 /* Datatables button container styling */
 .buttonContainer {
 	display: inline-block;
+	margin: 0px 5px 0px 0px;
 }
 
 button.save-button {

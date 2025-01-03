@@ -74,7 +74,6 @@ HTMLWidgets.widget({
         };
 
         setupXYInteraction(data);
-        addSavePlotButton(controlContainer, xyView, expressionView, "Save Plot");
         if (expressionView) {
           addAxisMessage(data);
         }
@@ -194,8 +193,19 @@ function setupXYInteraction(data)
                     },
                     { 
                       text: 'Save Data',
-                      action: () => showDataDropdown(),
+                      action: () => {
+                        let dropdown = document.getElementsByClassName("dataDropdown")[0];
+                        dropdown.classList.toggle("show");
+                      },
                       attr: {class: 'save-button saveSubset'}
+                    },
+                    {
+                      text: 'Save Plot',
+                      action: () => {
+                        let dropdown = document.getElementsByClassName("plotDropdown")[0];
+                        dropdown.classList.toggle("show");
+                      },
+                      attr: {class: 'save-button savePlot'}
                     }
                   ]
                 },
@@ -208,17 +218,10 @@ function setupXYInteraction(data)
     datatable.on('click', 'tr', function() { tableClickListener(datatable, state, data, $(this)) } );
     data.xyView.addSignalListener('click', function(name, value) { XYSignalListener(datatable, state, value[0], data) } );
 
-    $(document.getElementsByClassName("saveSubset")[0]).html(`Save Data`);
     addSaveDataElement(state, data, `Save All`, `Save (0)`);
+    addSavePlotElement(data.xyView, data.expressionView);
+    hideDropdownsOnHoverAway();
   });
-}
-
-/**
- * Shows Save Data options
- */
-function showDataDropdown() {
-  let dataDropdown = document.getElementsByClassName("dataDropdown")[0];
-  dropdownOnClick(dataDropdown);
 }
 
 /**
