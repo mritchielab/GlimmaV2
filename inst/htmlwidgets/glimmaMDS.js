@@ -117,8 +117,8 @@ function addSavePlotButton(controlContainer, mdsPlot, eigenPlot)
 
   dropdownButton.onclick = () => dropdownContent.classList.toggle("show");
   
-  // setup mouseover to fade dropdown
-  window.addEventListener("mouseover", (event) => {
+  // setup click to fade dropdown
+  window.addEventListener("click", (event) => {
     const container = event.target.closest(".dropdown");
     if (container !== null) {
       return;
