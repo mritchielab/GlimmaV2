@@ -2,7 +2,6 @@
 // parametrise graph encoding for MDS plot
 function createMDSSpec(mdsData, dimList, features, width, height, continuousColour) 
 {
-  console.log(features);
 
   // generate tooltip object for embedding in spec
   var tooltipString = "{'x':datum[x_axis], 'y':datum[y_axis]";
@@ -15,7 +14,6 @@ function createMDSSpec(mdsData, dimList, features, width, height, continuousColo
     }  
   });
   tooltipString += "}";
-  console.log(tooltipString)
   var tooltip = { "signal" : tooltipString };
   
   // generate colorscheme options

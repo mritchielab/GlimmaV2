@@ -38,7 +38,7 @@
 	grid-template-columns: repeat(6, 1fr);
 	font-family: sans-serif;
 	color: #353535;
-	font-size: 9;
+	font-size: 9px;
 }
 
 .controlContainerXY {

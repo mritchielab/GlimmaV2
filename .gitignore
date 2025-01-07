@@ -6,3 +6,5 @@ inst/doc
 ..Rcheck
 .DS_Store
 Glimma.Rproj
+GlimmaV2.Rproj
+/vignettes/QuartoTest*
