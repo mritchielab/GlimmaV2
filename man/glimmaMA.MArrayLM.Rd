@@ -10,7 +10,7 @@
   counts = dge$counts,
   groups = dge$samples$group,
   coef = ncol(x$coefficients),
-  status = limma::decideTests(x),
+  status = limma::decideTests(x, adjust.method = p.adj.method),
   anno = x$genes,
   display.columns = NULL,
   status.cols = c("#1052bd", "silver", "#cc212f"),
