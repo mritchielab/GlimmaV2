@@ -21,3 +21,4 @@ dependencies:
       - XYSpecs.js
       - expressionSpec.js
       - makeTooltip.js
+      - saveTools.js
