@@ -20,8 +20,6 @@ HTMLWidgets.widget({
 
       renderValue: function(x) {
 
-        console.log(x);
-
         var handler = new vegaTooltip.Handler();
 
         // create container elements
@@ -73,6 +71,62 @@ HTMLWidgets.widget({
     };
   }
 });
+
+function addSavePlotButton(controlContainer, mdsPlot, eigenPlot) 
+{
+  var dropdownDiv = document.createElement("div");
+  dropdownDiv.setAttribute("class", "dropdown");
+
+  controlContainer.appendChild(dropdownDiv);
+
+  var dropdownButton = document.createElement("button");
+  dropdownButton.setAttribute("class", "save-button");
+  dropdownButton.innerHTML = "Save Plot";
+
+  var dropdownContent = document.createElement("div");
+  dropdownContent.setAttribute("class", "dropdown-content");
+
+  dropdownDiv.appendChild(dropdownButton);
+  dropdownDiv.appendChild(dropdownContent);
+
+  const renderButton = (plot, text, type) => {
+    var saveButton = document.createElement("a");
+    saveButton.setAttribute("href", "#");
+    saveButton.innerText = text;
+    saveButton.onclick = function() {
+      plot.toImageURL(type, scaleFactor=3).then(function (url) {
+        var link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('target', '_blank');
+        link.setAttribute('download', 'vega-export.' + type);
+        link.dispatchEvent(new MouseEvent('click'));
+      });
+    };
+    return saveButton;
+  }
+
+  var pngSummaryBtn = renderButton(mdsPlot, text="Summary plot (PNG)", type='png');
+  var svgSummaryBtn = renderButton(mdsPlot, text="Summary plot (SVG)", type='svg');
+  var pngExpressionBtn = renderButton(eigenPlot, text="Expression plot (PNG)", type='png');
+  var svgExpressionBtn = renderButton(eigenPlot, text="Expression plot (SVG)", type='svg');
+
+  dropdownContent.appendChild(pngSummaryBtn);
+  dropdownContent.appendChild(svgSummaryBtn);
+  dropdownContent.appendChild(pngExpressionBtn);
+  dropdownContent.appendChild(svgExpressionBtn);
+
+  dropdownButton.onclick = () => dropdownContent.classList.toggle("show");
+  
+  // setup mouseover to fade dropdown
+  window.addEventListener("mouseover", (event) => {
+    const container = event.target.closest(".dropdown");
+    if (container !== null) {
+      return;
+    }
+    dropdownContent.classList.remove("show");
+  });
+}
+
 
 function processDataMDS(x)
 {
