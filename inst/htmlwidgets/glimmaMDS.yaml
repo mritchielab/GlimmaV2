@@ -5,7 +5,7 @@ dependencies:
     script:
       - vega.min.js
     stylesheet:
-      - vega_plots.css
+      - MDS.css
   - name: vega-tooltip
     version: 1.0
     src: htmlwidgets/lib/vega-tooltip
