@@ -1,3 +1,17 @@
+/* classnames */
+const PLOT_CONTAINER = "plotContainer";
+const CONTROL_CONTAINER = "controlContainer";
+const MDS_CONTAINER = "mdsContainer";
+const EIGEN_CONTAINER = "eigenContainer";
+const SAVE_CONTAINER = "saveContainer";
+const SAVE_BUTTON = "saveButtonMDS";
+const DIMMED_BOX = "dimmedBox";
+const SAVE_MODAL = "saveModalMDS";
+const SHOW = "show";
+const ALERT_BOX = "alertBox";
+const INVISIBLE = "invisible";
+const WARNING = "warning";
+
 HTMLWidgets.widget({
 
   name: 'glimmaMDS',
@@ -7,40 +21,44 @@ HTMLWidgets.widget({
   factory: function(el, width, height) {
 
     // create general layout elements
-    var plotContainer = document.createElement("div");
-    var controlContainer = document.createElement("div");
-    plotContainer.setAttribute("class", "plotContainer");
-    controlContainer.setAttribute("class", "controlContainerMDS");
+    const plotContainer = document.createElement("div");
+    const controlContainer = document.createElement("div");
+    plotContainer.setAttribute("class", PLOT_CONTAINER);
+    controlContainer.setAttribute("class", CONTROL_CONTAINER);
 
-    var widget = document.getElementById(el.id);
+    const widget = document.getElementById(el.id);
     widget.appendChild(plotContainer);
     widget.appendChild(controlContainer);
 
     return {
 
       renderValue: function(x) {
-
-        var handler = new vegaTooltip.Handler();
+        const handler = new vegaTooltip.Handler();
 
         // create container elements
-        var mdsContainer = document.createElement("div");
-        var eigenContainer = document.createElement("div");
-        mdsContainer.setAttribute("class", "mdsContainer");
-        eigenContainer.setAttribute("class", "eigenContainer");
+        const mdsContainer = document.createElement("div");
+        const eigenContainer = document.createElement("div");
+        mdsContainer.setAttribute("class", MDS_CONTAINER);
+        eigenContainer.setAttribute("class", EIGEN_CONTAINER);
 
         plotContainer.appendChild(mdsContainer);
         plotContainer.appendChild(eigenContainer);
 
         processDataMDS(x);
-        var mdsData = HTMLWidgets.dataframeToD3(x.data.mdsData);
-        var eigenData = HTMLWidgets.dataframeToD3(x.data.eigenData);
+        const mdsData = HTMLWidgets.dataframeToD3(x.data.mdsData);
+        const eigenData = HTMLWidgets.dataframeToD3(x.data.eigenData);
 
         /* NB: the createXXSpec functions are defined in lib/GlimmaSpecs */
-        var mdsSpec = createMDSSpec(mdsData, x.data.dimlist,
-                                      x.data.features,
-                                      width, height, x.data.continuousColour);
+        const mdsSpec = createMDSSpec(
+          mdsData, 
+          x.data.dimlist,
+          x.data.features,
+          width, 
+          height, 
+          x.data.continuousColour
+        );
 
-        var mdsView = new vega.View(vega.parse(mdsSpec), {
+        const mdsView = new vega.View(vega.parse(mdsSpec), {
           renderer: 'svg',
           container: mdsContainer,
           bind: controlContainer,
@@ -50,22 +68,21 @@ HTMLWidgets.widget({
         mdsView.tooltip(handler.call);
         mdsView.runAsync();
 
-        var eigenSpec = createEigenSpec(eigenData, width, height);
+        const eigenSpec = createEigenSpec(eigenData, width, height);
         eigenView = new vega.View(vega.parse(eigenSpec), {
           renderer: 'svg',
           container: eigenContainer,
           hover: true
         });
+
         eigenView.runAsync();
         linkPlotsMDS(mdsView, eigenView);
-
         addColourMessage(x.data, mdsView, controlContainer);
         addSavePlotButton(widget, controlContainer, mdsView, eigenView, text="Save Plot",
                           summaryText="MDS", expressionText="VAR");
-
       },
 
-      resize: function(width, height)
+      resize: function(_, _)
       {}
 
     };
@@ -74,27 +91,23 @@ HTMLWidgets.widget({
 
 function addSavePlotButton(widget, controlContainer, mdsPlot, eigenPlot) 
 {
-  var saveContainer = document.createElement("div");
-  saveContainer.setAttribute("class", "saveContainer");
+  const saveContainer = document.createElement("div");
+  saveContainer.setAttribute("class", SAVE_CONTAINER);
 
   widget.insertBefore(saveContainer, controlContainer);
 
-  var button = document.createElement("button");
-  button.setAttribute("class", "saveButtonMDS");
-  const DOWNLOAD_ICON = 
-  `<svg class="downloadSVG" width="20px" height="20px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M14.7928932,11.5 L11.6464466,8.35355339 C11.4511845,8.15829124 11.4511845,7.84170876 11.6464466,7.64644661 C11.8417088,7.45118446 12.1582912,7.45118446 12.3535534,7.64644661 L16.3535534,11.6464466 C16.5488155,11.8417088 16.5488155,12.1582912 16.3535534,12.3535534 L12.3535534,16.3535534 C12.1582912,16.5488155 11.8417088,16.5488155 11.6464466,16.3535534 C11.4511845,16.1582912 11.4511845,15.8417088 11.6464466,15.6464466 L14.7928932,12.5 L4,12.5 C3.72385763,12.5 3.5,12.2761424 3.5,12 C3.5,11.7238576 3.72385763,11.5 4,11.5 L14.7928932,11.5 Z M16,4.5 C15.7238576,4.5 15.5,4.27614237 15.5,4 C15.5,3.72385763 15.7238576,3.5 16,3.5 L19,3.5 C20.3807119,3.5 21.5,4.61928813 21.5,6 L21.5,18 C21.5,19.3807119 20.3807119,20.5 19,20.5 L16,20.5 C15.7238576,20.5 15.5,20.2761424 15.5,20 C15.5,19.7238576 15.7238576,19.5 16,19.5 L19,19.5 C19.8284271,19.5 20.5,18.8284271 20.5,18 L20.5,6 C20.5,5.17157288 19.8284271,4.5 19,4.5 L16,4.5 Z" transform="rotate(90 12.5 12)"/>
-  </svg>`;
+  const button = document.createElement("button");
+  button.setAttribute("class", SAVE_BUTTON);
+  // from assets.js
   button.innerHTML = DOWNLOAD_ICON;
-
   saveContainer.appendChild(button);
 
   const dimmedBox = document.createElement("div");
-  dimmedBox.setAttribute("class", "dimmedBox");
+  dimmedBox.setAttribute("class", DIMMED_BOX);
   saveContainer.appendChild(dimmedBox);
 
   const saveModal = document.createElement("div");
-  saveModal.setAttribute("class", "saveModalMDS");
+  saveModal.setAttribute("class", SAVE_MODAL);
   saveContainer.appendChild(saveModal);
 
   const renderButton = (plot, text, type) => {
@@ -109,8 +122,8 @@ function addSavePlotButton(widget, controlContainer, mdsPlot, eigenPlot)
         link.setAttribute('target', '_blank');
         link.setAttribute('download', text);
         link.dispatchEvent(new MouseEvent('click'));
-        saveModal.classList.remove("show");
-        dimmedBox.classList.remove("show");
+        saveModal.classList.remove(SHOW);
+        dimmedBox.classList.remove(SHOW);
       });
     };
     return saveButton;
@@ -127,14 +140,14 @@ function addSavePlotButton(widget, controlContainer, mdsPlot, eigenPlot)
   saveModal.appendChild(svgVariance);
 
   button.onclick = () => {
-    saveModal.classList.add("show");
-    dimmedBox.classList.add("show");
+    saveModal.classList.add(SHOW);
+    dimmedBox.classList.add(SHOW);
   };
   
   window.addEventListener("click", (event) => {
-    if (event.target.classList.contains("dimmedBox")) {
-      saveModal.classList.remove("show");
-      dimmedBox.classList.remove("show");
+    if (event.target.classList.contains(DIMMED_BOX)) {
+      saveModal.classList.remove(SHOW);
+      dimmedBox.classList.remove(SHOW);
     }
   });
 }
@@ -159,54 +172,50 @@ function processDataMDS(x)
 
 function linkPlotsMDS(mdsView, eigenView)
 {
-
   // highlight variance plot when we change a signal in the MDS plot
   mdsView.addSignalListener('x_axis', function(name, value) {
     var externalSelectValue = parseInt(value.substring(3));
     eigenView.signal("external_select_x", externalSelectValue);
     eigenView.runAsync();
   });
-
   mdsView.addSignalListener('y_axis', function(name, value) {
     var externalSelectValue = parseInt(value.substring(3));
     eigenView.signal("external_select_y", externalSelectValue);
     eigenView.runAsync();
   });
-
 }
 
 function addColourMessage(data, view, container)
 {
   var alertBox = document.createElement("div");
-  alertBox.setAttribute("class", "alertBox invisible");
+  alertBox.classList.add(ALERT_BOX);
+  alertBox.classList.add(INVISIBLE);
   // update the warning box when colourscheme signal changes
   view.addSignalListener('colourscheme',
-    function(name, value) { updateColourMessage(data, container, view, value) });
+    (_, value) => updateColourMessage(data, container, view, value));
   // update warning box when the colour_by signal changes
   view.addSignalListener('colour_by',
-    function(name, value) {
-      updateColourMessage(data, container, view, view.signal('colourscheme'));
-    });
+    (_, value) => updateColourMessage(data, container, view, view.signal('colourscheme'))
+  );
   container.appendChild(alertBox);
 }
 
 function updateColourMessage(data, container, view, value)
 {
-  var alertBox = container.getElementsByClassName("alertBox")[0];
+  var alertBox = container.getElementsByClassName(ALERT_BOX)[0];
   let schemeCount = vega.scheme(value).length;
   let colourBy = view.signal("colour_by");
   let colourCount = [...new Set(data.mdsData[colourBy])].length;
-  alertBox.setAttribute("class", "alertBox invisible");
+  alertBox.classList.remove(WARNING);
+  alertBox.classList.add(INVISIBLE);
 
   if (data.continuousColour) return;
-  if (value == "plasma" || value == "viridis") return;
-  if (colourBy == "-") return;
+  if (value === "plasma" || value === "viridis") return;
+  if (colourBy === "-") return;
 
   if (schemeCount < colourCount) {
-    alertBox.innerHTML = `Warning: not enough distinct colours. ${colourCount} supported.`;
-
-    alertBox.setAttribute("class", "alertBox warning");
-  } else {
-    alertBox.setAttribute("class", "alertBox invisible");
+    alertBox.innerHTML = `Warning: not enough distinct colours. ${schemeCount} supported.`;
+    alertBox.classList.remove(INVISIBLE);
+    alertBox.classList.add(WARNING);
   }
 }
