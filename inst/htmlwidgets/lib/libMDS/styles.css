@@ -27,7 +27,7 @@
 	font-size: 9px;
 }
 
-button.saveButtonMDS {
+button.saveButton {
     box-sizing: border-box;
     padding: 0.3em 0.5em;
     font-size: 9pt;
@@ -50,14 +50,14 @@ button.saveButtonMDS {
     text-overflow: ellipsis;
 }
 
-button.saveButtonMDS:hover 
+button.saveButton:hover 
 {
     background-color: #aaaaaa;
     color: white;
     border-color: #aaaaaa;
 }
 
-button.saveButtonMDS:active {
+button.saveButton:active {
     color: rgba(255, 255, 255, 1);
     box-shadow: 0px 0px 5px rgb(31 31 31 / 40%);
 }
@@ -70,9 +70,10 @@ button.saveButtonMDS:active {
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1;
 }
 
-.saveModalMDS {
+.saveModal {
 	display: none;
 	position: fixed;
 	top: 50%;
@@ -82,9 +83,10 @@ button.saveButtonMDS:active {
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 	z-index: 1;
 	border-radius: 4px;
+	text-align: left;
 }
 
-.saveModalMDS a {
+.saveModal a {
     position: relative;
     z-index: 1;
 	padding: 12px 16px;
@@ -96,7 +98,7 @@ button.saveButtonMDS:active {
 	border-radius: 4px;
 }
 
-.saveModalMDS a:hover {
+.saveModal a:hover {
 	background-color: #ddd
 }
 

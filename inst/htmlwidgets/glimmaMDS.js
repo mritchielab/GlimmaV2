@@ -1,16 +1,18 @@
-/* classnames */
-const PLOT_CONTAINER = "plotContainer";
-const CONTROL_CONTAINER = "controlContainer";
-const MDS_CONTAINER = "mdsContainer";
-const EIGEN_CONTAINER = "eigenContainer";
-const SAVE_CONTAINER = "saveContainer";
-const SAVE_BUTTON = "saveButtonMDS";
-const DIMMED_BOX = "dimmedBox";
-const SAVE_MODAL = "saveModalMDS";
-const SHOW = "show";
-const ALERT_BOX = "alertBox";
-const INVISIBLE = "invisible";
-const WARNING = "warning";
+/* Stores classnames for reference in styles.css */
+const CLASSNAMES = {
+  plotContainer: "plotContainer",
+  controlContainer: "controlContainer",
+  mdsContainer: "mdsContainer",
+  eigenContainer: "eigenContainer",
+  saveContainer: "saveContainer",
+  saveButton: "saveButton",
+  dimmedBox: "dimmedBox",
+  saveModal: "saveModal",
+  show: "show",
+  alertBox: "alertBox",
+  invisible: "invisible",
+  warning: "warning",
+};
 
 HTMLWidgets.widget({
 
@@ -23,8 +25,8 @@ HTMLWidgets.widget({
     // create general layout elements
     const plotContainer = document.createElement("div");
     const controlContainer = document.createElement("div");
-    plotContainer.setAttribute("class", PLOT_CONTAINER);
-    controlContainer.setAttribute("class", CONTROL_CONTAINER);
+    plotContainer.setAttribute("class", CLASSNAMES.plotContainer);
+    controlContainer.setAttribute("class", CLASSNAMES.controlContainer);
 
     const widget = document.getElementById(el.id);
     widget.appendChild(plotContainer);
@@ -38,8 +40,8 @@ HTMLWidgets.widget({
         // create container elements
         const mdsContainer = document.createElement("div");
         const eigenContainer = document.createElement("div");
-        mdsContainer.setAttribute("class", MDS_CONTAINER);
-        eigenContainer.setAttribute("class", EIGEN_CONTAINER);
+        mdsContainer.setAttribute("class", CLASSNAMES.mdsContainer);
+        eigenContainer.setAttribute("class", CLASSNAMES.eigenContainer);
 
         plotContainer.appendChild(mdsContainer);
         plotContainer.appendChild(eigenContainer);
@@ -69,7 +71,7 @@ HTMLWidgets.widget({
         mdsView.runAsync();
 
         const eigenSpec = createEigenSpec(eigenData, width, height);
-        eigenView = new vega.View(vega.parse(eigenSpec), {
+        const eigenView = new vega.View(vega.parse(eigenSpec), {
           renderer: 'svg',
           container: eigenContainer,
           hover: true
@@ -78,8 +80,7 @@ HTMLWidgets.widget({
         eigenView.runAsync();
         linkPlotsMDS(mdsView, eigenView);
         addColourMessage(x.data, mdsView, controlContainer);
-        addSavePlotButton(widget, controlContainer, mdsView, eigenView, text="Save Plot",
-                          summaryText="MDS", expressionText="VAR");
+        addSavePlotButton(widget, controlContainer, mdsView, eigenView);
       },
 
       resize: function(_, _)
@@ -92,22 +93,22 @@ HTMLWidgets.widget({
 function addSavePlotButton(widget, controlContainer, mdsPlot, eigenPlot) 
 {
   const saveContainer = document.createElement("div");
-  saveContainer.setAttribute("class", SAVE_CONTAINER);
+  saveContainer.setAttribute("class", CLASSNAMES.saveContainer);
 
   widget.insertBefore(saveContainer, controlContainer);
 
   const button = document.createElement("button");
-  button.setAttribute("class", SAVE_BUTTON);
+  button.setAttribute("class", CLASSNAMES.saveButton);
   // from assets.js
   button.innerHTML = DOWNLOAD_ICON;
   saveContainer.appendChild(button);
 
   const dimmedBox = document.createElement("div");
-  dimmedBox.setAttribute("class", DIMMED_BOX);
+  dimmedBox.setAttribute("class", CLASSNAMES.dimmedBox);
   saveContainer.appendChild(dimmedBox);
 
   const saveModal = document.createElement("div");
-  saveModal.setAttribute("class", SAVE_MODAL);
+  saveModal.setAttribute("class", CLASSNAMES.saveModal);
   saveContainer.appendChild(saveModal);
 
   const renderButton = (plot, text, type) => {
@@ -122,8 +123,8 @@ function addSavePlotButton(widget, controlContainer, mdsPlot, eigenPlot)
         link.setAttribute('target', '_blank');
         link.setAttribute('download', text);
         link.dispatchEvent(new MouseEvent('click'));
-        saveModal.classList.remove(SHOW);
-        dimmedBox.classList.remove(SHOW);
+        saveModal.classList.remove(CLASSNAMES.show);
+        dimmedBox.classList.remove(CLASSNAMES.show);
       });
     };
     return saveButton;
@@ -140,14 +141,14 @@ function addSavePlotButton(widget, controlContainer, mdsPlot, eigenPlot)
   saveModal.appendChild(svgVariance);
 
   button.onclick = () => {
-    saveModal.classList.add(SHOW);
-    dimmedBox.classList.add(SHOW);
+    saveModal.classList.add(CLASSNAMES.show);
+    dimmedBox.classList.add(CLASSNAMES.show);
   };
   
   window.addEventListener("click", (event) => {
-    if (event.target.classList.contains(DIMMED_BOX)) {
-      saveModal.classList.remove(SHOW);
-      dimmedBox.classList.remove(SHOW);
+    if (event.target.classList.contains(CLASSNAMES.dimmedBox)) {
+      saveModal.classList.remove(CLASSNAMES.show);
+      dimmedBox.classList.remove(CLASSNAMES.show);
     }
   });
 }
@@ -188,8 +189,8 @@ function linkPlotsMDS(mdsView, eigenView)
 function addColourMessage(data, view, container)
 {
   var alertBox = document.createElement("div");
-  alertBox.classList.add(ALERT_BOX);
-  alertBox.classList.add(INVISIBLE);
+  alertBox.classList.add(CLASSNAMES.alertBox);
+  alertBox.classList.add(CLASSNAMES.invisible);
   // update the warning box when colourscheme signal changes
   view.addSignalListener('colourscheme',
     (_, value) => updateColourMessage(data, container, view, value));
@@ -202,12 +203,12 @@ function addColourMessage(data, view, container)
 
 function updateColourMessage(data, container, view, value)
 {
-  var alertBox = container.getElementsByClassName(ALERT_BOX)[0];
+  var alertBox = container.getElementsByClassName(CLASSNAMES.alertBox)[0];
   let schemeCount = vega.scheme(value).length;
   let colourBy = view.signal("colour_by");
   let colourCount = [...new Set(data.mdsData[colourBy])].length;
-  alertBox.classList.remove(WARNING);
-  alertBox.classList.add(INVISIBLE);
+  alertBox.classList.remove(CLASSNAMES.warning);
+  alertBox.classList.add(CLASSNAMES.invisible);
 
   if (data.continuousColour) return;
   if (value === "plasma" || value === "viridis") return;
@@ -215,7 +216,7 @@ function updateColourMessage(data, container, view, value)
 
   if (schemeCount < colourCount) {
     alertBox.innerHTML = `Warning: not enough distinct colours. ${schemeCount} supported.`;
-    alertBox.classList.remove(INVISIBLE);
-    alertBox.classList.add(WARNING);
+    alertBox.classList.remove(CLASSNAMES.invisible);
+    alertBox.classList.add(CLASSNAMES.warning);
   }
 }
