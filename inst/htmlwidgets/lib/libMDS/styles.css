@@ -14,40 +14,27 @@
 }
 
 .saveContainer {
-	text-align: end;
-	margin: 0px 20px;
+	margin-top: 10px;
+	margin-left: 15px;
 }
 
 .controlContainer {
 	padding: 10px;
 	display: grid;
-	grid-template-columns: repeat(6, 1fr);
+	grid-template-columns: repeat(7, 1fr);
 	font-family: sans-serif;
 	color: #353535;
 	font-size: 9px;
 }
 
 button.saveButton {
-    box-sizing: border-box;
-    padding: 0.3em 0.5em;
-    font-size: 9pt;
+    padding: 3px;
     border: 1px solid #e7e7e7;
     border-radius: 3px;
     cursor: pointer;
-    line-height: 1.6em;
-    color: black;
-    white-space: nowrap;
-    overflow: hidden;
     background-color: #e7e7e7;
-    background-image: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-    user-select: none;
-    text-decoration: none;
     outline: none;
-    text-overflow: ellipsis;
 }
 
 button.saveButton:hover 
@@ -106,31 +93,18 @@ button.saveButton:active {
 	display: block;
 }
 
-.alertBox 
+.warningBox 
 {
+	display: none;
 	text-align: center;
 	font-family: sans-serif;
 	padding: 2px;
 	margin: 10px;
 	font-size: 10pt;
-	color: #383d41;
-	background-color: #e2e3e5;
-	border: 1px solid #d6d8db;
-	border-radius: .25rem;
-}
-
-.invisible 
-{
-	display: none;
-}
-
-.warning
-{
-	display: inline-block;
-	margin-left: 0px;
 	color: #721c24;
 	background-color: #f8d7da;
 	border: 1px solid #f5c6cb;
+	border-radius: .25rem;
 }
 
 /* styling vega components */

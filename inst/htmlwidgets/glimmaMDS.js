@@ -9,9 +9,7 @@ const CLASSNAMES = {
   dimmedBox: "dimmedBox",
   saveModal: "saveModal",
   show: "show",
-  alertBox: "alertBox",
-  invisible: "invisible",
-  warning: "warning",
+  warningBox: "warningBox",
 };
 
 HTMLWidgets.widget({
@@ -79,8 +77,8 @@ HTMLWidgets.widget({
 
         eigenView.runAsync();
         linkPlotsMDS(mdsView, eigenView);
+        addSavePlotButton(controlContainer, mdsView, eigenView);
         addColourMessage(x.data, mdsView, controlContainer);
-        addSavePlotButton(widget, controlContainer, mdsView, eigenView);
       },
 
       resize: function(_, _)
@@ -90,12 +88,12 @@ HTMLWidgets.widget({
   }
 });
 
-function addSavePlotButton(widget, controlContainer, mdsPlot, eigenPlot) 
+function addSavePlotButton(controlContainer, mdsPlot, eigenPlot) 
 {
   const saveContainer = document.createElement("div");
   saveContainer.setAttribute("class", CLASSNAMES.saveContainer);
 
-  widget.insertBefore(saveContainer, controlContainer);
+  controlContainer.appendChild(saveContainer);
 
   const button = document.createElement("button");
   button.setAttribute("class", CLASSNAMES.saveButton);
@@ -188,9 +186,8 @@ function linkPlotsMDS(mdsView, eigenView)
 
 function addColourMessage(data, view, container)
 {
-  var alertBox = document.createElement("div");
-  alertBox.classList.add(CLASSNAMES.alertBox);
-  alertBox.classList.add(CLASSNAMES.invisible);
+  const warningBox = document.createElement("div");
+  warningBox.classList.add(CLASSNAMES.warningBox);
   // update the warning box when colourscheme signal changes
   view.addSignalListener('colourscheme',
     (_, value) => updateColourMessage(data, container, view, value));
@@ -198,25 +195,23 @@ function addColourMessage(data, view, container)
   view.addSignalListener('colour_by',
     (_, value) => updateColourMessage(data, container, view, view.signal('colourscheme'))
   );
-  container.appendChild(alertBox);
+  container.appendChild(warningBox);
 }
 
 function updateColourMessage(data, container, view, value)
 {
-  var alertBox = container.getElementsByClassName(CLASSNAMES.alertBox)[0];
+  const warningBox = container.getElementsByClassName(CLASSNAMES.warningBox)[0];
   let schemeCount = vega.scheme(value).length;
   let colourBy = view.signal("colour_by");
   let colourCount = [...new Set(data.mdsData[colourBy])].length;
-  alertBox.classList.remove(CLASSNAMES.warning);
-  alertBox.classList.add(CLASSNAMES.invisible);
+  warningBox.classList.remove(CLASSNAMES.show);
 
   if (data.continuousColour) return;
   if (value === "plasma" || value === "viridis") return;
   if (colourBy === "-") return;
 
   if (schemeCount < colourCount) {
-    alertBox.innerHTML = `Warning: not enough distinct colours. ${schemeCount} supported.`;
-    alertBox.classList.remove(CLASSNAMES.invisible);
-    alertBox.classList.add(CLASSNAMES.warning);
+    warningBox.innerHTML = `Warning: not enough distinct colours. ${schemeCount} supported.`;
+    warningBox.classList.add(CLASSNAMES.show);
   }
 }
