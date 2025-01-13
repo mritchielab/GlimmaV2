@@ -1,7 +1,6 @@
 function hideDropdownsOnHoverAway() 
 {
   window.addEventListener("mouseover", (event) => {
-    console.log(event.target);
     const buttonContainer = event.target.closest(".buttonContainer");
     if (buttonContainer !== null) {
       return;
