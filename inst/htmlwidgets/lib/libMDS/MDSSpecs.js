@@ -33,32 +33,58 @@ function createMDSSpec(mdsData, dimList, features, width, height, continuousColo
         {
           "name": "x_axis",
           "value": dimList[0],
-          "bind": { "input": "select", "options": dimList }
+          "bind": { 
+            "input": "select", 
+            "options": dimList, 
+            "name": "X axis" 
+          }
         },
         {
           "name": "y_axis",
           "value": dimList[1],
-          "bind": { "input": "select", "options": dimList }
+          "bind": { 
+            "input": "select", 
+            "options": dimList, 
+            "name": "Y axis" 
+          }
         },
         {
           "name": "scale_by",
           "value": features["numeric"][0],
-          "bind": { "input": "select", "options": features["numeric"] }
+          "bind": { 
+            "input": "select", 
+            "options": features["numeric"], 
+            "name": "scale by" 
+          }
         },
         {
           "name": "colour_by",
           "value": features["discrete"][0],
-          "bind": { "input": "select", "options": continuousColour ? features["numeric"] : features["discrete"] }
+          "bind": { 
+            "input": "select", 
+            "options": continuousColour ? features["numeric"] : features["discrete"],
+            "name": "colour by" 
+           }
         },
         {
           "name": "shape_by",
           "value": features["discrete"][0],
-          "bind": { "input": "select", "options": features["discrete"] }
+          "bind": { 
+            "input": 
+            "select", 
+            "options": features["discrete"],
+            "name": "shape by",
+          }
         },
         {
           "name": "colourscheme",
           "value": colourschemes[1],
-          "bind": { "input": "select", "options": colourschemes }
+          "bind": { 
+            "input": 
+            "select", 
+            "options": colourschemes,
+            "name": "colourscheme"
+           }
         }
       ],
     "data": 

@@ -1,0 +1,156 @@
+.plotContainer {
+	display: inline-grid;
+	grid-column-gap: 2rem;
+}
+
+.mdsContainer {
+	grid-column-start: 1;
+	grid-column-end: 2;
+}
+
+.eigenContainer {
+	grid-column-start: 2;
+	grid-column-end: 3;
+}
+
+.saveContainer {
+	text-align: end;
+	margin: 0px 20px;
+}
+
+.controlContainer {
+	padding: 10px;
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	font-family: sans-serif;
+	color: #353535;
+	font-size: 9px;
+}
+
+button.saveButton {
+    box-sizing: border-box;
+    padding: 0.3em 0.5em;
+    font-size: 9pt;
+    border: 1px solid #e7e7e7;
+    border-radius: 3px;
+    cursor: pointer;
+    line-height: 1.6em;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #e7e7e7;
+    background-image: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    user-select: none;
+    text-decoration: none;
+    outline: none;
+    text-overflow: ellipsis;
+}
+
+button.saveButton:hover 
+{
+    background-color: #aaaaaa;
+    color: white;
+    border-color: #aaaaaa;
+}
+
+button.saveButton:active {
+    color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 5px rgb(31 31 31 / 40%);
+}
+
+.dimmedBox {
+    display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1;
+}
+
+.saveModal {
+	display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	border-radius: 4px;
+	text-align: left;
+}
+
+.saveModal a {
+    position: relative;
+    z-index: 1;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+    font-size: 11px;
+    color: #383838;
+	font-family: sans-serif;
+	border-radius: 4px;
+}
+
+.saveModal a:hover {
+	background-color: #ddd
+}
+
+.show {
+	display: block;
+}
+
+.alertBox 
+{
+	text-align: center;
+	font-family: sans-serif;
+	padding: 2px;
+	margin: 10px;
+	font-size: 10pt;
+	color: #383d41;
+	background-color: #e2e3e5;
+	border: 1px solid #d6d8db;
+	border-radius: .25rem;
+}
+
+.invisible 
+{
+	display: none;
+}
+
+.warning
+{
+	display: inline-block;
+	margin-left: 0px;
+	color: #721c24;
+	background-color: #f8d7da;
+	border: 1px solid #f5c6cb;
+}
+
+/* styling vega components */
+
+.vega-bind-name {
+	margin-right: 2px;
+	margin-bottom: 5px;
+	font-size: 12px;
+	font-family: sans-serif;
+	color: #404040;
+	display: block;
+}
+
+.vega-bind select {
+	margin-bottom: 7px;
+	margin-right: 7px;
+}
+
+select
+{
+	display: block;
+	width: 90%;
+}

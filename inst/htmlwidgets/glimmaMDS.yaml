@@ -4,8 +4,6 @@ dependencies:
     src: htmlwidgets/lib/vega
     script:
       - vega.min.js
-    stylesheet:
-      - vega_plots.css
   - name: vega-tooltip
     version: 1.0
     src: htmlwidgets/lib/vega-tooltip
@@ -13,12 +11,11 @@ dependencies:
       - vega-tooltip.js
     stylesheet:
       - vega-tooltip.css
-  - name: GlimmaV2
+  - name: libMDS
     version: 1.0
-    src: htmlwidgets/lib/GlimmaV2
+    src: htmlwidgets/lib/libMDS
     script:
       - MDSSpecs.js
-      - XYSpecs.js
-      - expressionSpec.js
-      - makeTooltip.js
-      - saveTools.js
+      - assets.js
+    stylesheet:
+      - styles.css
