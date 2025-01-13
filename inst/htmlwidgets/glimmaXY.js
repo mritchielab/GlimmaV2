@@ -31,7 +31,7 @@ HTMLWidgets.widget({
         var xyTable = HTMLWidgets.dataframeToD3(x.data.table)
         var xySpec = createXYSpec(x.data, xyTable, width, height);
         var xyView = new vega.View(vega.parse(xySpec), {
-          renderer: 'svg',
+          renderer: 'canvas',
           container: xyContainer,
           bind: controlContainer,
           hover: true
@@ -51,7 +51,7 @@ HTMLWidgets.widget({
           countsMatrix = HTMLWidgets.dataframeToD3(x.data.counts);
           var expressionSpec = createExpressionSpec(width, height, x.data.expCols, x.data.sampleColours, x.data.samples);
           var expressionView = new vega.View(vega.parse(expressionSpec), {
-            renderer: 'svg',
+            renderer: 'canvas',
             container: expressionContainer,
             hover: true
           });
