@@ -216,11 +216,11 @@ function setupXYInteraction(data)
                     }
                   ]
                 },
-        scrollY: (data.height*0.4).toString() + "px",
+        scrollY: (data.height*0.35).toString() + "px",
         scroller: true,
         scrollX: false,
         orderClasses: false,
-        stripeClasses: ['stripe1','stripe2']
+        stripeClasses: ['stripe1','stripe2'],
       });
 
     datatable.on('click', 'tr', function() { tableClickListener(datatable, state, data, $(this)) } );
