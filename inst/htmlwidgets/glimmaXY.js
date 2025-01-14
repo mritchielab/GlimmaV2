@@ -31,7 +31,7 @@ HTMLWidgets.widget({
         var xyTable = HTMLWidgets.dataframeToD3(x.data.table)
         var xySpec = createXYSpec(x.data, xyTable, width, height);
         var xyView = new vega.View(vega.parse(xySpec), {
-          renderer: 'svg',
+          renderer: 'canvas',
           container: xyContainer,
           bind: controlContainer,
           hover: true
@@ -46,13 +46,24 @@ HTMLWidgets.widget({
         {
           expressionContainer = document.createElement("div");
           expressionContainer.setAttribute("class", "expressionContainer");
+
           plotContainer.appendChild(expressionContainer);
           xyContainer.setAttribute("class", "xyContainer");
+
+          const expressionPlotContainer = document.createElement("div");
+          expressionPlotContainer.setAttribute("class", "expressionPlotContainer");
+          expressionContainer.appendChild(expressionPlotContainer);
+
+          const expressionControls = document.createElement("div");
+          expressionControls.setAttribute("class", "expressionControls");
+          expressionContainer.appendChild(expressionControls);
+
           countsMatrix = HTMLWidgets.dataframeToD3(x.data.counts);
           var expressionSpec = createExpressionSpec(width, height, x.data.expCols, x.data.sampleColours, x.data.samples);
           var expressionView = new vega.View(vega.parse(expressionSpec), {
-            renderer: 'svg',
-            container: expressionContainer,
+            renderer: 'canvas',
+            container: expressionPlotContainer,
+            bind: expressionControls,
             hover: true
           });
           expressionView.tooltip(handler.call);
@@ -209,10 +220,11 @@ function setupXYInteraction(data)
                     }
                   ]
                 },
-        scrollY: (data.height*0.4).toString() + "px",
+        scrollY: (data.height*0.33).toString() + "px",
+        scroller: true,
         scrollX: false,
         orderClasses: false,
-        stripeClasses: ['stripe1','stripe2']
+        stripeClasses: ['stripe1','stripe2'],
       });
 
     datatable.on('click', 'tr', function() { tableClickListener(datatable, state, data, $(this)) } );

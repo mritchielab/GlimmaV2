@@ -32,28 +32,12 @@
 
 /* contains everything that is not a plot */
 
-.controlContainerMDS {
-	padding: 10px;
-	display: grid;
-	grid-template-columns: repeat(6, 1fr);
-	font-family: sans-serif;
-	color: #353535;
-	font-size: 9px;
-}
-
 .controlContainerXY {
 	padding: 10px;
 	display: block;
 	font-family: sans-serif;
 	color: #353535;
-	font-size: 9;
-}
-
-/* container for vega signal inputs */
-
-.vega-bindings {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	font-size: 9pt;
 }
 
 /* custom styling for some inputs */
@@ -70,24 +54,6 @@
 	display: block;
 }
 
-/* text for dropdown */
-
-.vega-bind-name {
-	margin-right: 2px;
-	margin-bottom: 5px;
-	font-size: 12px;
-	font-family: sans-serif;
-	color: #404040;
-	display: block;
-}
-
-/* dropdown controls */
-
-.vega-bind select {
-	margin-bottom: 7px;
-	margin-right: 7px;
-}
-
 /* input width */
 .min_extent_input, .max_extent_input {
 	width: 90%;
@@ -96,7 +62,8 @@
 /* Datatables button container styling */
 .buttonContainer {
 	display: inline-block;
-	margin: 0px 5px 0px 0px;
+	margin-right: 5px;
+	margin-bottom: 10px;
 }
 
 button.save-button {
@@ -147,7 +114,7 @@ button.save-button:active {
 	background-color: #f1f1f1;
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
+	z-index: 3;
 	border-radius: 4px;
 }
 
@@ -209,18 +176,17 @@ button.save-button:active {
 	border: 1px solid #f5c6cb;
 }
 
-/* vega max y axis setting */
-input.max_y_axis, input.min_y_axis
+input.max_extent_input, input.min_extent_input
 {
-	margin-bottom: 5px;
-	margin-right: 10px;
-	border: solid 1px #b5b5b5;
-	border-radius: 2px;
+	width: 90%;
+	border: 1px solid #b5b5b5;
+	border-radius: 4px;
+	font-size: 9pt;
+	font-family: sans-serif;
 	display: block;
 }
 
-select
-{
-	display: block;
-	width: 90%;
+.expressionControls {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
 }

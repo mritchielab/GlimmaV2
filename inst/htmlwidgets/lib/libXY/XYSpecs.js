@@ -21,8 +21,8 @@ function createXYSpec(xyData, xyTable, width, height)
     "$schema": "https://vega.github.io/schema/vega/v5.json",
     "description": "Testing ground for GlimmaV2",
     "width": xyData.counts == -1 ? (width*0.9) : (width * 0.5),
-    "height": height * 0.35,
-    "padding": {"left": 0, "top": 0, "right": 0, "bottom": 10},
+    "height": height * 0.45,
+    "padding": {"left": 0, "top": 0, "right": 0, "bottom": 5},
     "autosize": {"type": "fit", "resize": true},
     "title": {
       "text": xyData.title

@@ -57,7 +57,7 @@ button.saveButton:active {
 	width: 100vw;
 	height: 100vh;
 	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 1;
+	z-index: 3;
 }
 
 .saveModal {
@@ -68,14 +68,13 @@ button.saveButton:active {
 	background-color: #f1f1f1;
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
+	z-index: 3;
 	border-radius: 4px;
 	text-align: left;
 }
 
 .saveModal a {
     position: relative;
-    z-index: 1;
 	padding: 12px 16px;
 	text-decoration: none;
 	display: block;
@@ -105,26 +104,4 @@ button.saveButton:active {
 	background-color: #f8d7da;
 	border: 1px solid #f5c6cb;
 	border-radius: .25rem;
-}
-
-/* styling vega components */
-
-.vega-bind-name {
-	margin-right: 2px;
-	margin-bottom: 5px;
-	font-size: 12px;
-	font-family: sans-serif;
-	color: #404040;
-	display: block;
-}
-
-.vega-bind select {
-	margin-bottom: 7px;
-	margin-right: 7px;
-}
-
-select
-{
-	display: block;
-	width: 90%;
 }
