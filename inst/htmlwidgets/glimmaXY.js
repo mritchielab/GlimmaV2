@@ -46,13 +46,20 @@ HTMLWidgets.widget({
         {
           expressionContainer = document.createElement("div");
           expressionContainer.setAttribute("class", "expressionContainer");
+
           plotContainer.appendChild(expressionContainer);
           xyContainer.setAttribute("class", "xyContainer");
+
+          const expressionControls = document.createElement("div");
+          expressionControls.setAttribute("class", "expressionControls");
+          plotContainer.appendChild(expressionControls);
+
           countsMatrix = HTMLWidgets.dataframeToD3(x.data.counts);
           var expressionSpec = createExpressionSpec(width, height, x.data.expCols, x.data.sampleColours, x.data.samples);
           var expressionView = new vega.View(vega.parse(expressionSpec), {
             renderer: 'canvas',
             container: expressionContainer,
+            bind: expressionControls,
             hover: true
           });
           expressionView.tooltip(handler.call);
@@ -210,6 +217,7 @@ function setupXYInteraction(data)
                   ]
                 },
         scrollY: (data.height*0.4).toString() + "px",
+        scroller: true,
         scrollX: false,
         orderClasses: false,
         stripeClasses: ['stripe1','stripe2']

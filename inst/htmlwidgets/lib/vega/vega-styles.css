@@ -1,0 +1,14 @@
+.vega-bind-name {
+	margin-right: 2px;
+	margin-bottom: 5px;
+	font-size: 12px;
+	font-family: sans-serif;
+	color: #404040;
+	display: block;
+}
+
+.vega-bind select {
+    display: block;
+    width: 90%;
+    font-size: 9pt;
+}

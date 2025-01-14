@@ -106,25 +106,3 @@ button.saveButton:active {
 	border: 1px solid #f5c6cb;
 	border-radius: .25rem;
 }
-
-/* styling vega components */
-
-.vega-bind-name {
-	margin-right: 2px;
-	margin-bottom: 5px;
-	font-size: 12px;
-	font-family: sans-serif;
-	color: #404040;
-	display: block;
-}
-
-.vega-bind select {
-	margin-bottom: 7px;
-	margin-right: 7px;
-}
-
-select
-{
-	display: block;
-	width: 90%;
-}
