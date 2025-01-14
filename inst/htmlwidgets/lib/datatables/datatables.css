@@ -1307,7 +1307,7 @@ label
 /* search input border */
 .dataTables_wrapper .dataTables_filter input {
   border: solid 1px #d8d8d8;
-  border-radius: 2px;
+  border-radius: 4px;
   height: 23px;
 }
 

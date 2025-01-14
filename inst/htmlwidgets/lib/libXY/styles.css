@@ -187,7 +187,6 @@ input.max_extent_input, input.min_extent_input
 }
 
 .expressionControls {
-	grid-column-start: 2;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 }
