@@ -150,13 +150,14 @@ buildXYData <- function(
 
   # transform status column to (downReg, nonDE, upReg)
   status <- sapply(status, function (x) {
-    switch(as.character(x), "-1"="downReg", "0"="nonDE", "1"="upReg")
+    switch(ifelse(is.na(x), "NA", as.character(x)), 
+           "-1"="downReg", "0"="nonDE", "1"="upReg", "NA"="NA")
   })
 
   if (length(status)!=nrow(table)) stop("Status vector
      must have the same number of genes as the main arguments.")
 
-  table <- cbind(table, status=as.vector(status))
+  table <- cbind(table, status=as.vector(unlist(status)))
   if (!is.null(anno))
   {
     table <- cbind(table, anno)
