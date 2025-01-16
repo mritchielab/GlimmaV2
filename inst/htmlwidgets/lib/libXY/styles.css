@@ -138,42 +138,22 @@ button.save-button:active {
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 
-.show {
-	display: block;
-}
-
-
-
 .alertBox 
 {
+	display: none;
 	text-align: center;
 	font-family: sans-serif;
 	padding: 2px;
 	margin: 10px;
 	font-size: 10pt;
-	color: #383d41;
-	background-color: #e2e3e5;
-	border: 1px solid #d6d8db;
+	color: #721c24;
+	background-color: #f8d7da;
+	border: 1px solid #f5c6cb;
 	border-radius: .25rem;
 }
 
-.danger 
-{
-	color: #721c24;
-	background-color: #f8d7da;
-	border: 1px solid #f5c6cb;
-}
-.invisible 
-{
-	display: none;
-}
-.warning
-{
-	display: inline-block;
-	margin-left: 0px;
-	color: #721c24;
-	background-color: #f8d7da;
-	border: 1px solid #f5c6cb;
+.showXY {
+	display: block;
 }
 
 input.max_extent_input, input.min_extent_input
