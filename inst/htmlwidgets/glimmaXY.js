@@ -111,102 +111,105 @@ HTMLWidgets.widget({
     
     }
 
-    function hideDropdownsOnHoverAway() 
-    {
-      window.addEventListener("mouseover", (event) => {
-        const buttonContainer = event.target.closest(`.${CLASSNAMES.buttonContainer}`);
-        if (buttonContainer !== null) {
-          return;
+    const SaveUtils = {
+
+      // hides save dropdowns upon hovering away from them
+      hideDropdownsOnHoverAway: () => {
+        window.addEventListener("mouseover", (event) => {
+          const buttonContainer = event.target.closest(`.${CLASSNAMES.buttonContainer}`);
+          if (buttonContainer !== null) {
+            return;
+          }
+          const dropdownContents = document.getElementsByClassName(CLASSNAMES.dropdownContent);
+          for (const dropdownContent of dropdownContents) {
+            dropdownContent.classList.remove(CLASSNAMES.show);
+          }
+        });
+      },
+
+      // creates the save plot button
+      addSavePlotElement: (xyPlot, expressionPlot=null) => {
+        const dropdown = document.createElement("div");
+        dropdown.classList.add(CLASSNAMES.dropdownContent);
+        dropdown.classList.add(CLASSNAMES.plotDropdown);
+  
+        const createSavePlotButton = (plot, text, type) => {
+          const saveButton = document.createElement("a");
+          saveButton.setAttribute("href", "#");
+          saveButton.innerText = text;
+          saveButton.onclick = function(e) {
+            e.preventDefault();
+            plot.toImageURL(type, scaleFactor=3).then(function (url) {
+              const link = document.createElement('a');
+              link.setAttribute('href', url);
+              link.setAttribute('target', '_blank');
+              link.setAttribute('download', `${text}.` + type);
+              link.dispatchEvent(new MouseEvent('click'));
+            });
+          };
+          return saveButton;
         }
-        const dropdownContents = document.getElementsByClassName(CLASSNAMES.dropdownContent);
-        for (const dropdownContent of dropdownContents) {
-          dropdownContent.classList.remove(CLASSNAMES.show);
+        const pngSummaryBtn = createSavePlotButton(xyPlot, text="Summary plot (PNG)", type='png');
+        const svgSummaryBtn = createSavePlotButton(xyPlot, text="Summary plot (SVG)", type='svg');
+        dropdown.appendChild(pngSummaryBtn);
+        dropdown.appendChild(svgSummaryBtn);
+  
+        // add the expression buttons if expression plot is active
+        if (expressionPlot) {
+          const pngExpressionBtn = createSavePlotButton(expressionPlot, text="Expression plot (PNG)", type='png');
+          const svgExpressionBtn = createSavePlotButton(expressionPlot, text="Expression plot (SVG)", type='svg');
+          dropdown.appendChild(pngExpressionBtn);
+          dropdown.appendChild(svgExpressionBtn);
         }
-      });
-    }    
+  
+        const buttonContainer = document.getElementsByClassName(CLASSNAMES.savePlotButton)[0].parentElement;
+        buttonContainer.appendChild(dropdown);
+      },
 
-    // creates the save plot button
-    function addSavePlotElement(xyPlot, expressionPlot=null) {
-      const dropdown = document.createElement("div");
-      dropdown.classList.add(CLASSNAMES.dropdownContent);
-      dropdown.classList.add(CLASSNAMES.plotDropdown);
+      // creates the save data button
+      addSaveDataElement: (state, data) => {
+        const dropdown = document.createElement("div");
+        dropdown.classList.add(CLASSNAMES.dropdownContent);
+        dropdown.classList.add(CLASSNAMES.dataDropdown);
 
-      // add elements to container
-      const createSavePlotButton = (plot, text, type) => {
-        const saveButton = document.createElement("a");
-        saveButton.setAttribute("href", "#");
-        saveButton.innerText = text;
-        saveButton.onclick = function(e) {
-          e.preventDefault();
-          plot.toImageURL(type, scaleFactor=3).then(function (url) {
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('target', '_blank');
-            link.setAttribute('download', `${text}.` + type);
-            link.dispatchEvent(new MouseEvent('click'));
-          });
-        };
-        return saveButton;
-      }
-      const pngSummaryBtn = createSavePlotButton(xyPlot, text="Summary plot (PNG)", type='png');
-      const svgSummaryBtn = createSavePlotButton(xyPlot, text="Summary plot (SVG)", type='svg');
-      dropdown.appendChild(pngSummaryBtn);
-      dropdown.appendChild(svgSummaryBtn);
-
-      // add the expression buttons if expression plot is active
-      if (expressionPlot) {
-        const pngExpressionBtn = createSavePlotButton(expressionPlot, text="Expression plot (PNG)", type='png');
-        const svgExpressionBtn = createSavePlotButton(expressionPlot, text="Expression plot (SVG)", type='svg');
-        dropdown.appendChild(pngExpressionBtn);
-        dropdown.appendChild(svgExpressionBtn);
-      }
-
-      const buttonContainer = document.getElementsByClassName(CLASSNAMES.savePlotButton)[0].parentElement;
-      buttonContainer.appendChild(dropdown);
-    } 
-
-    // creates the save data button
-    function addSaveDataElement(state, data) {
-      const dropdownContent = document.createElement("div");
-      dropdown.classList.add(CLASSNAMES.dropdownContent);
-      dropdown.classList.add(CLASSNAMES.dataDropdown);
-
-      const saveSelectBtn = document.createElement("a");
-      saveSelectBtn.setAttribute("href", "#");
-      saveSelectBtn.setAttribute("class", CLASSNAMES.saveSelectedGenesButton);
-      saveSelectBtn.innerText = `Save (0)`;
-      saveSelectBtn.onclick = () => saveTableClickListener(state, data, false);
-
-      const saveAllBtn = document.createElement("a");
-      saveAllBtn.setAttribute("href", "#");
-      saveAllBtn.innerText = `Save All`;
-      saveAllBtn.onclick = () => saveTableClickListener(state, data, true);
-
-      dropdownContent.appendChild(saveSelectBtn);
-      dropdownContent.appendChild(saveAllBtn);
-
-      const buttonContainer = document.getElementsByClassName(CLASSNAMES.saveDataButton)[0].parentElement;
-      buttonContainer.appendChild(dropdownContent);
-    } 
-
-    function saveTableClickListener(state, data, save_all)
-    {
-      if (save_all)
-      {
-        if (confirm(`This will save the table and counts data for all ${data.xyTable.length} genes.`)) 
+        const saveTableClickListener = (e, state, data, save_all) =>
         {
-          /* only include counts if it is provided */
-          const arr = data.countsMatrix==null ? 
-            data.xyTable : data.xyTable.map( x => $.extend(x, data.countsMatrix[x.index]) );
-          saveJSONArrayToCSV(arr);
+          e.preventDefault();
+          if (save_all)
+          {
+            if (confirm(`This will save the table and counts data for all ${data.xyTable.length} genes.`)) 
+            {
+              /* only include counts if it is provided */
+              const arr = data.countsMatrix==null ? 
+                data.xyTable : data.xyTable.map( x => $.extend(x, data.countsMatrix[x.index]) );
+              saveJSONArrayToCSV(arr);
+            }
+          }
+          else
+          {
+            const concatData = data.countsMatrix==null ?
+              state.selected : state.selected.map( x => $.extend(x, data.countsMatrix[x.index]) );
+            saveJSONArrayToCSV(concatData);
+          }
         }
-      }
-      else
-      {
-        const concatData = data.countsMatrix==null ?
-          state.selected : state.selected.map( x => $.extend(x, data.countsMatrix[x.index]) );
-        saveJSONArrayToCSV(concatData);
-      }
+  
+        const saveSelectBtn = document.createElement("a");
+        saveSelectBtn.setAttribute("href", "#");
+        saveSelectBtn.setAttribute("class", CLASSNAMES.saveSelectedGenesButton);
+        saveSelectBtn.innerText = `Save (0)`;
+        saveSelectBtn.onclick = (e) => saveTableClickListener(e, state, data, false);
+  
+        const saveAllBtn = document.createElement("a");
+        saveAllBtn.setAttribute("href", "#");
+        saveAllBtn.innerText = `Save All`;
+        saveAllBtn.onclick = (e) => saveTableClickListener(e, state, data, true);
+  
+        dropdown.appendChild(saveSelectBtn);
+        dropdown.appendChild(saveAllBtn);
+  
+        const buttonContainer = document.getElementsByClassName(CLASSNAMES.saveDataButton)[0].parentElement;
+        buttonContainer.appendChild(dropdown);
+      },
     }
 
     /**
@@ -270,9 +273,9 @@ HTMLWidgets.widget({
         datatable.on('click', 'tr', function() { tableClickListener(datatable, state, data, $(this)) } );
         data.xyView.addSignalListener('click', function(_, value) { XYSignalListener(datatable, state, value[0], data) } );
 
-        addSaveDataElement(state, data);
-        addSavePlotElement(data.xyView, data.expressionView);
-        hideDropdownsOnHoverAway();
+        SaveUtils.addSaveDataElement(state, data);
+        SaveUtils.addSavePlotElement(data.xyView, data.expressionView);
+        SaveUtils.hideDropdownsOnHoverAway();
       });
     }
 
