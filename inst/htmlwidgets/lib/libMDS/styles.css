@@ -88,10 +88,6 @@ button.saveButton:active {
 	background-color: #ddd
 }
 
-.show {
-	display: block;
-}
-
 .warningBox 
 {
 	display: none;
@@ -104,4 +100,9 @@ button.saveButton:active {
 	background-color: #f8d7da;
 	border: 1px solid #f5c6cb;
 	border-radius: .25rem;
+}
+
+
+.showMDS {
+	display: block;
 }

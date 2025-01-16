@@ -8,7 +8,7 @@ const CLASSNAMES = {
   saveButton: "saveButton",
   dimmedBox: "dimmedBox",
   saveModal: "saveModal",
-  show: "show",
+  show: "showMDS",
   warningBox: "warningBox",
 };
 
