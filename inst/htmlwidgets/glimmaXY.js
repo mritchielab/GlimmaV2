@@ -114,13 +114,13 @@ HTMLWidgets.widget({
     const SaveUtils = {
 
       // hides save dropdowns upon hovering away from them
-      hideDropdownsOnHoverAway: () => {
+      hideDropdownsOnHoverAway: (controlContainer) => {
         window.addEventListener("mouseover", (event) => {
           const buttonContainer = event.target.closest(`.${CLASSNAMES.buttonContainer}`);
           if (buttonContainer !== null) {
             return;
           }
-          const dropdownContents = document.getElementsByClassName(CLASSNAMES.dropdownContent);
+          const dropdownContents = controlContainer.getElementsByClassName(CLASSNAMES.dropdownContent);
           for (const dropdownContent of dropdownContents) {
             dropdownContent.classList.remove(CLASSNAMES.show);
           }
@@ -128,7 +128,7 @@ HTMLWidgets.widget({
       },
 
       // creates the save plot button
-      addSavePlotElement: (xyPlot, expressionPlot=null) => {
+      addSavePlotElement: (xyPlot, expressionPlot=null, controlContainer) => {
         const dropdown = document.createElement("div");
         dropdown.classList.add(CLASSNAMES.dropdownContent);
         dropdown.classList.add(CLASSNAMES.plotDropdown);
@@ -162,7 +162,7 @@ HTMLWidgets.widget({
           dropdown.appendChild(svgExpressionBtn);
         }
   
-        const buttonContainer = document.getElementsByClassName(CLASSNAMES.savePlotButton)[0].parentElement;
+        const buttonContainer = controlContainer.getElementsByClassName(CLASSNAMES.savePlotButton)[0].parentElement;
         buttonContainer.appendChild(dropdown);
       },
 
@@ -207,7 +207,7 @@ HTMLWidgets.widget({
         dropdown.appendChild(saveSelectBtn);
         dropdown.appendChild(saveAllBtn);
   
-        const buttonContainer = document.getElementsByClassName(CLASSNAMES.saveDataButton)[0].parentElement;
+        const buttonContainer = data.controlContainer.getElementsByClassName(CLASSNAMES.saveDataButton)[0].parentElement;
         buttonContainer.appendChild(dropdown);
       },
     }
@@ -248,7 +248,7 @@ HTMLWidgets.widget({
                         { 
                           text: 'Save Data',
                           action: () => {
-                            const dropdown = document.getElementsByClassName(CLASSNAMES.dataDropdown)[0];
+                            const dropdown = data.controlContainer.getElementsByClassName(CLASSNAMES.dataDropdown)[0];
                             dropdown.classList.toggle(CLASSNAMES.show);
                           },
                           attr: {class: [ CLASSNAMES.saveButtonBase, CLASSNAMES.saveDataButton].join(" ")}
@@ -256,7 +256,7 @@ HTMLWidgets.widget({
                         {
                           text: 'Save Plot',
                           action: () => {
-                            const dropdown = document.getElementsByClassName(CLASSNAMES.plotDropdown)[0];
+                            const dropdown = data.controlContainer.getElementsByClassName(CLASSNAMES.plotDropdown)[0];
                             dropdown.classList.toggle(CLASSNAMES.show);
                           },
                           attr: {class: [ CLASSNAMES.saveButtonBase, CLASSNAMES.savePlotButton].join(" ")}
@@ -274,8 +274,8 @@ HTMLWidgets.widget({
         data.xyView.addSignalListener('click', function(_, value) { XYSignalListener(datatable, state, value[0], data) } );
 
         SaveUtils.addSaveDataElement(state, data);
-        SaveUtils.addSavePlotElement(data.xyView, data.expressionView);
-        SaveUtils.hideDropdownsOnHoverAway();
+        SaveUtils.addSavePlotElement(data.xyView, data.expressionView, data.controlContainer);
+        SaveUtils.hideDropdownsOnHoverAway(data.controlContainer);
       });
     }
 
