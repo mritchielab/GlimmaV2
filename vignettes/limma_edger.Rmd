@@ -48,7 +48,6 @@ The Glimma MDS allows different dimensions to be plotted against each other, and
 
 ```{r}
 glimmaMDS(dge)
-glimmaMDS(dge, continuous.colour = TRUE)
 ```
 
 ### Interactions with the plot
