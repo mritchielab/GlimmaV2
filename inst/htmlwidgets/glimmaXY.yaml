@@ -40,4 +40,4 @@ dependencies:
       - makeTooltip.js
       - saveTools.js
     stylesheet:
-      - styles.css
+      - xy_styles.css

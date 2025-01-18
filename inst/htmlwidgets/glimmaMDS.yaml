@@ -20,4 +20,4 @@ dependencies:
       - MDSSpecs.js
       - assets.js
     stylesheet:
-      - styles.css
+      - mds_styles.css
