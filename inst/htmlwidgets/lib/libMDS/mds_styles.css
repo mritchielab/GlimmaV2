@@ -1,24 +1,24 @@
-.plotContainer {
+.glimmaMDS_plotContainer {
 	display: inline-grid;
 	grid-column-gap: 2rem;
 }
 
-.mdsContainer {
+.glimmaMDS_mdsContainer {
 	grid-column-start: 1;
 	grid-column-end: 2;
 }
 
-.eigenContainer {
+.glimmaMDS_eigenContainer {
 	grid-column-start: 2;
 	grid-column-end: 3;
 }
 
-.saveContainer {
+.glimmaMDS_saveContainer {
 	margin-top: 10px;
 	margin-left: 15px;
 }
 
-.controlContainer {
+.glimmaMDS_controlContainer {
 	padding: 10px;
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
@@ -27,7 +27,7 @@
 	font-size: 9px;
 }
 
-button.saveButton {
+.glimmaMDS_saveButton {
     padding: 3px;
     border: 1px solid #e7e7e7;
     border-radius: 3px;
@@ -37,19 +37,19 @@ button.saveButton {
     outline: none;
 }
 
-button.saveButton:hover 
+.glimmaMDS_saveButton:hover 
 {
     background-color: #aaaaaa;
     color: white;
     border-color: #aaaaaa;
 }
 
-button.saveButton:active {
+.glimmaMDS_saveButton:active {
     color: rgba(255, 255, 255, 1);
     box-shadow: 0px 0px 5px rgb(31 31 31 / 40%);
 }
 
-.dimmedBox {
+.glimmaMDS_dimmedBox {
     display: none;
 	position: fixed;
 	top: 0;
@@ -60,7 +60,7 @@ button.saveButton:active {
 	z-index: 3;
 }
 
-.saveModal {
+.glimmaMDS_saveModal {
 	display: none;
 	position: fixed;
 	top: 50%;
@@ -73,7 +73,7 @@ button.saveButton:active {
 	text-align: left;
 }
 
-.saveModal a {
+.glimmaMDS_saveModal a {
     position: relative;
 	padding: 12px 16px;
 	text-decoration: none;
@@ -84,11 +84,11 @@ button.saveButton:active {
 	border-radius: 4px;
 }
 
-.saveModal a:hover {
+.glimmaMDS_saveModal a:hover {
 	background-color: #ddd
 }
 
-.warningBox 
+.glimmaMDS_warningBox 
 {
 	display: none;
 	text-align: center;
@@ -103,6 +103,6 @@ button.saveButton:active {
 }
 
 
-.showMDS {
+.glimmaMDS_show {
 	display: block;
 }
