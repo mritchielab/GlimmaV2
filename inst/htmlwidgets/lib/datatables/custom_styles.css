@@ -3,23 +3,23 @@
 th { font-size: 8pt; }
 td { font-size: 8pt; }
 
-table.dataTable tbody tr.stripe1 {
+table.dataTable tbody tr.glimmaXY_stripe1 {
   background-color: #ffffff;
 }
-table.dataTable tbody tr.stripe1:hover {
+table.dataTable tbody tr.glimmaXY_stripe1:hover {
   background-color: #ebf0fa;
 }
-table.dataTable tbody tr.stripe1.selected {
+table.dataTable tbody tr.glimmaXY_stripe1.glimmaXY_selected {
   background-color: #e4ecff;
 }
-table.dataTable tbody tr.stripe2 {
+table.dataTable tbody tr.glimmaXY_stripe2 {
   background-color: #f6f6f6;
   border-bottom: solid #c0c0c0;
 }
-table.dataTable tbody tr.stripe2:hover {
+table.dataTable tbody tr.glimmaXY_stripe2:hover {
   background-color: #ebf0fa;
 }
-table.dataTable tbody tr.stripe2.selected {
+table.dataTable tbody tr.glimmaXY_stripe2.glimmaXY_selected {
   background-color: #e4ecff;
   border-bottom: solid #c0c0c0;
 }

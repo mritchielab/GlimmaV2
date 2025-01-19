@@ -1,38 +1,26 @@
-.plotContainer {
+.glimmaXY_plotContainer {
 	display: inline-grid;
 	grid-column-gap: 2rem;
 }
 
-/* MDS plots */
-.mdsContainer {
-	grid-column-start: 1;
-	grid-column-end: 2;
-}
-
-.eigenContainer {
-	grid-column-start: 2;
-	grid-column-end: 3;
-}
-
-/* XY plots */
-.xyContainerSingle {
+.glimmaXY_xyContainerSingle {
 	grid-column-start: 1;
 	grid-column-end: 3;
 }
 
-.xyContainer {
+.glimmaXY_xyContainer {
 	grid-column-start: 1;
 	grid-column-end: 2;
 }
 
-.expressionContainer {
+.glimmaXY_expressionContainer {
 	grid-column-start: 2;
 	grid-column-end: 3;
 }
 
 /* contains everything that is not a plot */
 
-.controlContainerXY {
+.glimmaXY_controlContainer {
 	padding: 10px;
 	display: block;
 	font-family: sans-serif;
@@ -40,33 +28,14 @@
 	font-size: 9pt;
 }
 
-/* custom styling for some inputs */
-
-.separator_signal {
-	display: block;
-	visibility: hidden;
-	height: 5px;
-}
-
-/* custom styling for some inputs */
-
-.display-block {
-	display: block;
-}
-
-/* input width */
-.min_extent_input, .max_extent_input {
-	width: 90%;
-}
-
 /* Datatables button container styling */
-.buttonContainer {
+.glimmaXY_buttonContainer {
 	display: inline-block;
 	margin-right: 5px;
 	margin-bottom: 10px;
 }
 
-button.save-button {
+.glimmaXY_save-button {
     box-sizing: border-box;
     padding: 0.3em 0.5em;
     font-size: 9pt;
@@ -88,27 +57,29 @@ button.save-button {
     outline: none;
     text-overflow: ellipsis;
 }
-button.save-button:hover 
+
+.glimmaXY_save-button:hover 
 {
     background-color: #aaaaaa;
     color: white;
     border-color: #aaaaaa;
 }
-button.save-button:active {
+
+.glimmaXY_save-button:active {
     color: rgba(255, 255, 255, 1);
     box-shadow: 0px 0px 5px rgb(31 31 31 / 40%);
 }
 
 /* The container <div> - needed to position the dropdown content */
 
-.dropdown {
+.glimmaXY_dropdown {
 	position: relative;
 	display: inline-block;
 }
 
 /* Dropdown Content (Hidden by Default) */
 
-.dropdown-content {
+.glimmaXY_dropdown-content {
 	display: none;
 	position: absolute;
 	background-color: #f1f1f1;
@@ -120,7 +91,7 @@ button.save-button:active {
 
 /* Links inside the dropdown */
 
-.dropdown-content a {
+.glimmaXY_dropdown-content a {
 	padding: 12px 16px;
 	text-decoration: none;
 	display: block;
@@ -132,13 +103,13 @@ button.save-button:active {
 
 /* Change color of dropdown links on hover */
 
-.dropdown-content a:hover {
+.glimmaXY_dropdown-content a:hover {
 	background-color: #ddd
 }
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 
-.alertBox 
+.glimmaXY_alertBox 
 {
 	display: none;
 	text-align: center;
@@ -152,11 +123,12 @@ button.save-button:active {
 	border-radius: .25rem;
 }
 
-.showXY {
+.glimmaXY_show {
 	display: block;
 }
 
-input.max_extent_input, input.min_extent_input
+.glimmaXY_max_extent_input, 
+.glimmaXY_min_extent_input
 {
 	width: 90%;
 	border: 1px solid #b5b5b5;
@@ -166,7 +138,7 @@ input.max_extent_input, input.min_extent_input
 	display: block;
 }
 
-.expressionControls {
+.glimmaXY_expressionControls {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 }
