@@ -7,31 +7,32 @@ HTMLWidgets.widget({
   factory: function(el, width, height) 
   {
 
-    /* Stores classnames for reference in styles.css */
-    const CLASSNAMES = {
-      plotContainer: "plotContainer",
-      controlContainer: "controlContainerXY",
-      xyContainerSingle: "xyContainerSingle",
-      expressionContainer: "expressionContainer",
-      expressionPlotContainer: "expressionPlotContainer",
-      expressionControls: "expressionControls",
-      xyContainer: "xyContainer",
-      saveButtonBase: "save-button",
-      saveSelectedGenesButton: "saveSelectButton",
-      saveDataButton: "saveSubset",
-      savePlotButton: "savePlot",
-      clearButton: "clearSubset",
-      datatable: "dataTable",
-      buttonContainer: "buttonContainer",
-      dataDropdown: "dataDropdown",
-      plotDropdown: "plotDropdown",
-      show: "showXY",
-      stripeOdd: "stripe1",
-      stripeEven: "stripe2",
-      selected: "selected",
-      alertBox: "alertBox",
-      dropdownContent: "dropdown-content",
-    };
+    const CLASSNAMES = Object.freeze({
+      plotContainer: "glimmaXY_plotContainer",
+      controlContainer: "glimmaXY_controlContainer",
+      xyContainerSingle: "glimmaXY_xyContainerSingle",
+      expressionContainer: "glimmaXY_expressionContainer",
+      expressionPlotContainer: "glimmaXY_expressionPlotContainer",
+      expressionControls: "glimmaXY_expressionControls",
+      xyContainer: "glimmaXY_xyContainer",
+      saveButtonBase: "glimmaXY_save-button",
+      saveSelectedGenesButton: "glimmaXY_saveSelectButton",
+      saveDataButton: "glimmaXY_saveSubset",
+      savePlotButton: "glimmaXY_savePlot",
+      clearButton: "glimmaXY_clearSubset",
+      datatable: "glimmaXY_dataTable",
+      buttonContainer: "glimmaXY_buttonContainer",
+      dataDropdown: "glimmaXY_dataDropdown",
+      plotDropdown: "glimmaXY_plotDropdown",
+      show: "glimmaXY_show",
+      stripeOdd: "glimmaXY_stripe1",
+      stripeEven: "glimmaXY_stripe2",
+      selected: "glimmaXY_selected",
+      alertBox: "glimmaXY_alertBox",
+      dropdownContent: "glimmaXY_dropdown-content",
+      minExtentInput: "glimmaXY_min_extent_input",
+      maxExtentInput: "glimmaXY_max_extent_input",
+    });
 
     const plotContainer = document.createElement("div");
     const controlContainer = document.createElement("div");
@@ -510,7 +511,15 @@ HTMLWidgets.widget({
           expressionContainer.appendChild(expressionControls);
 
           countsMatrix = HTMLWidgets.dataframeToD3(x.data.counts);
-          const expressionSpec = createExpressionSpec(width, height, x.data.expCols, x.data.sampleColours, x.data.samples);
+          const expressionSpec = createExpressionSpec(
+            width, 
+            height, 
+            x.data.expCols, 
+            x.data.sampleColours, 
+            x.data.samples,
+            CLASSNAMES.minExtentInput,
+            CLASSNAMES.maxExtentInput
+          );
           expressionView = new vega.View(vega.parse(expressionSpec), {
             renderer: 'canvas',
             container: expressionPlotContainer,

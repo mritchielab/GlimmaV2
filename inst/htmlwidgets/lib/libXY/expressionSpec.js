@@ -1,4 +1,4 @@
-function createExpressionSpec(width, height, expColumns, sampleColours, samples)
+function createExpressionSpec(width, height, expColumns, sampleColours, samples, minExtentInputClass, maxExtentInputClass)
 {
 
     let colourscheme_signal = 
@@ -44,7 +44,7 @@ function createExpressionSpec(width, height, expColumns, sampleColours, samples)
                         "value": null,
                         "bind": { 
                                   "input": "number",
-                                  "class": "min_extent_input",
+                                  "class": minExtentInputClass,
                                   "name": "Y min",
                                 },
                     },
@@ -53,7 +53,7 @@ function createExpressionSpec(width, height, expColumns, sampleColours, samples)
                         "value": null,
                         "bind": { 
                                   "input": "number",
-                                  "class": "max_extent_input",
+                                  "class": maxExtentInputClass,
                                   "name": "Y max",
                                 },
                     },
