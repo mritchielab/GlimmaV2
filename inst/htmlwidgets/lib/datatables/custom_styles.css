@@ -24,81 +24,6 @@ table.dataTable tbody tr.glimmaXY_stripe2.glimmaXY_selected {
   border-bottom: solid #c0c0c0;
 }
 
-div.container {
-  width: 80%;
-}
-
-div.dts div.dataTables_scrollBody {
-  background: white;
-}
-
-/* dt buttons */
-button.dt-button,
-div.dt-button,
-a.dt-button {
-  position: relative;
-  display: inline-block;
-  box-sizing: border-box;
-  margin-right: 0px;
-  margin-bottom: 0.333em;
-  padding: 0.3em 0.5em;
-  font-size: 8pt;
-  border: 1px solid #999;
-  border-radius: 2px;
-  cursor: pointer;
-  line-height: 1.6em;
-  color: #252525;
-  white-space: nowrap;
-  overflow: hidden;
-  background-color: #e9e9e9;
-  /* Fallback */
-  background-image: -webkit-linear-gradient(top, white 0%, #e9e9e9 100%);
-  /* Chrome 10+, Saf5.1+, iOS 5+ */
-  background-image: -moz-linear-gradient(top, white 0%, #e9e9e9 100%);
-  /* FF3.6 */
-  background-image: -ms-linear-gradient(top, white 0%, #e9e9e9 100%);
-  /* IE10 */
-  background-image: -o-linear-gradient(top, white 0%, #e9e9e9 100%);
-  /* Opera 11.10+ */
-  background-image: linear-gradient(to bottom, white 0%, #e9e9e9 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='white', EndColorStr='#e9e9e9');
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  text-decoration: none;
-  outline: none;
-  text-overflow: ellipsis;
-}
-
-/* border colours */
-table.dataTable tbody th, table.dataTable tbody td {
-  padding: 8px 8px;
-  border-right: 1px solid #d8d8d8;
-  border-bottom: 1px solid #d8d8d8;
-}
-
-table.dataTable tbody td:first-child {
-  border-left: 1px solid #d8d8d8;
-}
-
-table.dataTable thead th,
-table.dataTable tfoot th {
-  font-weight: bold;
-  border-bottom: 1px solid #d8d8d8;
-}
-
-.dataTables_wrapper.no-footer .dataTables_scrollBody 
-{
-  border-bottom: 1px solid #d8d8d8;
-}
-
-table.dataTable 
-{
-  border-spacing: 0px;
-}
-
-
 /* search filter */
 label 
 { 
@@ -112,4 +37,14 @@ label
   border: solid 1px #d8d8d8;
   border-radius: 4px;
   height: 23px;
+}
+
+table.dataTable,
+table.dataTable th,
+table.dataTable td {
+  border: none;
+}
+
+table.dataTable thead {
+  background-color: transparent;
 }
