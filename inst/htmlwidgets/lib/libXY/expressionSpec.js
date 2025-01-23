@@ -1,4 +1,13 @@
-function createExpressionSpec(width, height, expColumns, sampleColours, samples, minExtentInputClass, maxExtentInputClass)
+function createExpressionSpec(
+    width, 
+    height, 
+    expColumns, 
+    sampleColours, 
+    samples, 
+    minExtentInputClass, 
+    maxExtentInputClass,
+    jitterClass,
+)
 {
 
     let colourscheme_signal = 
@@ -32,6 +41,16 @@ function createExpressionSpec(width, height, expColumns, sampleColours, samples,
                         "value": "" 
                     },
                     {
+                        "name": "jitter", 
+                        "value": 0,
+                        "bind": { 
+                                  "input": "number",
+                                  "name": "jitter",
+                                  "class": jitterClass,
+                                  "min": 0
+                                },
+                    },
+                    {
                         "name": "min_extent",
                         "update": "extent[0]"
                     },
@@ -59,12 +78,10 @@ function createExpressionSpec(width, height, expColumns, sampleColours, samples,
                     },
                     {
                         "name": "min_y",
-                        // min Y value must be less than the range minimum
                         "update": " (min_y_input > extent[0]) ? null : min_y_input"
                     },
                     {
                         "name": "max_y",
-                        // max Y value must be greater than the range maximum
                         "update": " (max_y_input < extent[1]) ? null : max_y_input"
                     },
                     sampleColours == -1 ? colourscheme_signal : samplecols_signal
@@ -134,8 +151,11 @@ function createExpressionSpec(width, height, expColumns, sampleColours, samples,
                         "stroke": {"value": "#575757"},
                         "tooltip": tooltip
                     }
-                }
+                },
+                "transform": [
+                    {"type": "formula", "as": "x0", "expr": "datum.x"},
+                    {"type": "formula", "as": "x", "expr": "datum.x0 + (random()-0.5)*jitter"},
+                ],
             }]
     };
-
 }
