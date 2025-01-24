@@ -41,16 +41,6 @@ function createExpressionSpec(
                         "value": "" 
                     },
                     {
-                        "name": "jitter", 
-                        "value": 0,
-                        "bind": { 
-                                  "input": "number",
-                                  "name": "jitter",
-                                  "class": jitterClass,
-                                  "min": 0
-                                },
-                    },
-                    {
                         "name": "min_extent",
                         "update": "extent[0]"
                     },
@@ -83,6 +73,14 @@ function createExpressionSpec(
                     {
                         "name": "max_y",
                         "update": " (max_y_input < extent[1]) ? null : max_y_input"
+                    },
+                    {
+                        "name": "jitter", 
+                        "value": 0,
+                        "bind": { 
+                                "input": "range",
+                                "name": "jitter",
+                                },
                     },
                     sampleColours == -1 ? colourscheme_signal : samplecols_signal
                 ],

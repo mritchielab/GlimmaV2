@@ -20,15 +20,6 @@
                     "update": "extent[1]"
                 },
                 {
-                    "name": "jitter", 
-                    "value": 0,
-                    "bind": { 
-                              "input": "number",
-                              "name": "jitter",
-                              "min": 0
-                            },
-                },
-                {
                     "name": "min_y_input", 
                     "value": null,
                     "bind": { 
@@ -51,6 +42,14 @@
                 {
                     "name": "max_y",
                     "update": " (max_y_input < extent[1]) ? null : max_y_input"
+                },
+                {
+                    "name": "jitter", 
+                    "value": 0,
+                    "bind": { 
+                              "input": "range",
+                              "name": "jitter",
+                            },
                 },
                 {
                     "name": "colourscheme",
