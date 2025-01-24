@@ -32,7 +32,6 @@ HTMLWidgets.widget({
       dropdownContent: "glimmaXY_dropdown-content",
       minExtentInput: "glimmaXY_min_extent_input",
       maxExtentInput: "glimmaXY_max_extent_input",
-      jitter: "glimmaXY_jitter_input",
     });
 
     const plotContainer = document.createElement("div");
@@ -519,8 +518,7 @@ HTMLWidgets.widget({
             x.data.sampleColours, 
             x.data.samples,
             CLASSNAMES.minExtentInput,
-            CLASSNAMES.maxExtentInput,
-            CLASSNAMES.jitter,
+            CLASSNAMES.maxExtentInput
           );
           expressionView = new vega.View(vega.parse(expressionSpec), {
             renderer: 'canvas',
