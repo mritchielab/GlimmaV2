@@ -518,7 +518,7 @@ HTMLWidgets.widget({
             x.data.sampleColours, 
             x.data.samples,
             CLASSNAMES.minExtentInput,
-            CLASSNAMES.maxExtentInput,
+            CLASSNAMES.maxExtentInput
           );
           expressionView = new vega.View(vega.parse(expressionSpec), {
             renderer: 'canvas',
