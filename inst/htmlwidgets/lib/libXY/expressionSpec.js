@@ -6,7 +6,6 @@ function createExpressionSpec(
     samples, 
     minExtentInputClass, 
     maxExtentInputClass,
-    jitterClass,
 )
 {
 

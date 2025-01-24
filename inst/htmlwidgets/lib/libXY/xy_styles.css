@@ -128,8 +128,7 @@
 }
 
 .glimmaXY_max_extent_input, 
-.glimmaXY_min_extent_input,
-.glimmaXY_jitter_input
+.glimmaXY_min_extent_input
 {
 	width: 90%;
 	border: 1px solid #b5b5b5;
