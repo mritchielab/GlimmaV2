@@ -128,8 +128,7 @@
 }
 
 .glimmaXY_max_extent_input, 
-.glimmaXY_min_extent_input,
-.glimmaXY_jitter_input
+.glimmaXY_min_extent_input
 {
 	width: 90%;
 	border: 1px solid #b5b5b5;
@@ -141,5 +140,5 @@
 
 .glimmaXY_expressionControls {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr;
 }

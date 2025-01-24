@@ -1,13 +1,4 @@
-function createExpressionSpec(
-    width, 
-    height, 
-    expColumns, 
-    sampleColours, 
-    samples, 
-    minExtentInputClass, 
-    maxExtentInputClass,
-    jitterClass,
-)
+function createExpressionSpec(width, height, expColumns, sampleColours, samples, minExtentInputClass, maxExtentInputClass)
 {
 
     let colourscheme_signal = 
@@ -68,19 +59,13 @@ function createExpressionSpec(
                     },
                     {
                         "name": "min_y",
+                        // min Y value must be less than the range minimum
                         "update": " (min_y_input > extent[0]) ? null : min_y_input"
                     },
                     {
                         "name": "max_y",
+                        // max Y value must be greater than the range maximum
                         "update": " (max_y_input < extent[1]) ? null : max_y_input"
-                    },
-                    {
-                        "name": "jitter", 
-                        "value": 0,
-                        "bind": { 
-                                "input": "range",
-                                "name": "jitter",
-                                },
                     },
                     sampleColours == -1 ? colourscheme_signal : samplecols_signal
                 ],
@@ -149,11 +134,8 @@ function createExpressionSpec(
                         "stroke": {"value": "#575757"},
                         "tooltip": tooltip
                     }
-                },
-                "transform": [
-                    {"type": "formula", "as": "x0", "expr": "datum.x"},
-                    {"type": "formula", "as": "x", "expr": "datum.x0 + (random()-0.5)*jitter"},
-                ],
+                }
             }]
     };
+
 }
