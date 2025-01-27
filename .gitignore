@@ -9,3 +9,4 @@ Glimma.Rproj
 GlimmaV2.Rproj
 /vignettes/QuartoTest*
 .Rdata
+node_modules/
