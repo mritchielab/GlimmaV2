@@ -85,6 +85,25 @@ HTMLWidgets.widget({
              */
             toggleGene(gene) {
                 return __awaiter(this, void 0, void 0, function* () {
+                    // returns the index of the given gene in the array
+                    // returns -1 if the given gene is not found
+                    const containsGene = (arr, datum) => {
+                        let loc = -1;
+                        let i;
+                        for (i = 0; i < arr.length; i++) {
+                            if (arr[i].gene === datum.gene) {
+                                loc = i;
+                                break;
+                            }
+                        }
+                        return loc;
+                    };
+                    // removes the datum at index i in the array and returns
+                    // the result
+                    const remove = (arr, i) => {
+                        const new_arr = arr.slice(0, i).concat(arr.slice(i + 1));
+                        return new_arr;
+                    };
                     const loc = containsGene(this.selected, gene);
                     this.selected = loc >= 0 ? remove(this.selected, loc) : this.selected.concat(gene);
                     this._expressionUpdateHandler(loc < 0, gene);
@@ -403,33 +422,6 @@ HTMLWidgets.widget({
                 return;
             }
             alertBox.classList.remove(CLASSNAMES.show);
-        }
-        /**
-         * Searches an array gene data objects to determine if it contains a given gene.
-         * @param  {Array} arr array of gene data objects.
-         * @param  {Datum} datum given gene object
-         * @return {Integer} -1 if the given gene is not found; index of the gene in arr otherwise.
-         */
-        function containsGene(arr, datum) {
-            let loc = -1;
-            let i;
-            for (i = 0; i < arr.length; i++) {
-                if (arr[i]['gene'] === datum['gene']) {
-                    loc = i;
-                    break;
-                }
-            }
-            return loc;
-        }
-        /**
-         * Removes an element at the given index from an array and returns the result.
-         * @param  {Array} arr array of elements.
-         * @param  {Integer} i index i of element to be removed from arr.
-         * @return {Array} modified array with element at index i removed.
-         */
-        function remove(arr, i) {
-            const new_arr = arr.slice(0, i).concat(arr.slice(i + 1));
-            return new_arr;
         }
         return {
             renderValue: function (x) {

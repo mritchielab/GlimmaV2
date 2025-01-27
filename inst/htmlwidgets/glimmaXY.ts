@@ -51,10 +51,16 @@ HTMLWidgets.widget({
     widget?.appendChild(plotContainer);
     widget?.appendChild(controlContainer);
 
+    // vega datum
+    interface Datum {
+      gene: string;
+      index: string;
+    }
+
     class State {
       data: any;
       graphMode: boolean;
-      _selected: any[];
+      _selected: Datum[];
 
       /**
        * Returns state machine object retaining the current set of selected genes and managing
@@ -72,7 +78,7 @@ HTMLWidgets.widget({
        * Returns current selection of genes
        * @return {Array} Array of currently selected genes
        */
-      get selected() {
+      get selected(): Datum[] {
         return this._selected;
       }
     
@@ -80,7 +86,7 @@ HTMLWidgets.widget({
        * Sets a new array of selected genes and re-renders elements accordingly
        * @param  {Array} selected Array of genes which are currently selected
        */
-      set selected(selected) {
+      set selected(selected: Datum[]) {
         this._selected = selected;
         /* update save selected genes btn */
         $(this.data.controlContainer.getElementsByClassName(CLASSNAMES.saveSelectedGenesButton)[0])
@@ -94,18 +100,41 @@ HTMLWidgets.widget({
        * Adds a gene to the selection if it's not already selected, or remove it otherwise
        * @param  {Gene} gene Gene data object which has been clicked on
        */
-      async toggleGene(gene: any) {
+      async toggleGene(gene: Datum) {
+
+        // returns the index of the given gene in the array
+        // returns -1 if the given gene is not found
+        const containsGene = (arr: Datum[], datum: Datum): number => {
+          let loc = -1;
+          let i;
+          for (i = 0; i < arr.length; i++) {
+            if (arr[i].gene === datum.gene) {
+              loc = i;
+              break;
+            }
+          }
+          return loc;
+        }
+
+        // removes the datum at index i in the array and returns
+        // the result
+        const remove = (arr: Datum[], i: number): Datum[] =>
+        {
+          const new_arr = arr.slice(0, i).concat(arr.slice(i+1))
+          return new_arr;
+        }
+
         const loc = containsGene(this.selected, gene);
         this.selected = loc >= 0 ? remove(this.selected, loc) : this.selected.concat(gene);
         this._expressionUpdateHandler(loc < 0, gene);
       }
-      
+
       /**
        * Manages updates to the expression plot based on the most recently selected gene
        * @param {Boolean} selectionOccurred True if a gene was selected, false if it was de-selected
        * @param  {Gene} gene Gene data object which has been clicked on
        */
-      async _expressionUpdateHandler(selectionOccurred: boolean, gene: any) {
+      async _expressionUpdateHandler(selectionOccurred: boolean, gene: Datum) {
         if (!this.data.expressionView) return;
         if (selectionOccurred) {
           const countsRow = this.data.countsMatrix[gene.index];
@@ -452,40 +481,6 @@ HTMLWidgets.widget({
         return;
       }
       alertBox.classList.remove(CLASSNAMES.show);
-    }
-
-
-    /**
-     * Searches an array gene data objects to determine if it contains a given gene.
-     * @param  {Array} arr array of gene data objects.
-     * @param  {Datum} datum given gene object
-     * @return {Integer} -1 if the given gene is not found; index of the gene in arr otherwise.
-     */
-    function containsGene(arr: any, datum: any)
-    {
-      let loc = -1;
-      let i;
-      for (i = 0; i < arr.length; i++)
-      {
-        if (arr[i]['gene'] === datum['gene'])
-        {
-          loc = i;
-          break;
-        } 
-      }
-      return loc;
-    }
-
-    /**
-     * Removes an element at the given index from an array and returns the result.
-     * @param  {Array} arr array of elements.
-     * @param  {Integer} i index i of element to be removed from arr.
-     * @return {Array} modified array with element at index i removed.
-     */
-    function remove(arr: any[], i: number)
-    {
-      const new_arr = arr.slice(0, i).concat(arr.slice(i+1))
-      return new_arr;
     }
 
     return {
