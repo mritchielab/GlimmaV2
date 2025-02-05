@@ -296,7 +296,7 @@ glimmaMA.DESeqDataSet  <- function(
   ...)
 {
   transform.counts <- match.arg(transform.counts)
-  res.df <- as.data.frame(DESeq2::results(x))
+  res.df <- as.data.frame(DESeq2::results(x, ...))
   # filter out genes that have missing data
   complete_genes <- complete.cases(res.df)
   res.df <- res.df[complete_genes, ]
