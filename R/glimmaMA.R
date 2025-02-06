@@ -304,7 +304,8 @@ glimmaMA.DESeqDataSet  <- function(
 
   total_genes <- length(complete_genes)
   filtered_genes <- sum(!complete_genes)
-  message(filtered_genes, " of ", total_genes, " genes were filtered out in DESeq2 tests")
+  if (filtered_genes > 0)
+    message(filtered_genes, " of ", total_genes, " genes were filtered out in DESeq2 tests")
 
   # extract status if it is not given
   if (is.null(status))
