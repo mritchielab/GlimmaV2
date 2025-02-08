@@ -296,7 +296,7 @@ glimmaMA.DESeqDataSet  <- function(
   ...)
 {
   transform.counts <- match.arg(transform.counts)
-  res.df <- as.data.frame(DESeq2::results(x))
+  res.df <- as.data.frame(DESeq2::results(x, ...))
   # filter out genes that have missing data
   complete_genes <- complete.cases(res.df)
   res.df <- res.df[complete_genes, ]
@@ -304,7 +304,8 @@ glimmaMA.DESeqDataSet  <- function(
 
   total_genes <- length(complete_genes)
   filtered_genes <- sum(!complete_genes)
-  message(filtered_genes, " of ", total_genes, " genes were filtered out in DESeq2 tests")
+  if (filtered_genes > 0)
+    message(filtered_genes, " of ", total_genes, " genes were filtered out in DESeq2 tests")
 
   # extract status if it is not given
   if (is.null(status))
