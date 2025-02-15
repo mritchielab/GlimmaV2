@@ -8,13 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-;
 // @ts-ignore
 HTMLWidgets.widget({
     name: 'glimmaXY',
     type: 'output',
     factory: function (el, width, height) {
+        ;
+        ;
         const CLASSNAMES = Object.freeze({
+            // GLIMMA CLASSES
             plotContainer: "glimmaXY_plotContainer",
             controlContainer: "glimmaXY_controlContainer",
             xyContainerSingle: "glimmaXY_xyContainerSingle",
@@ -39,6 +41,9 @@ HTMLWidgets.widget({
             dropdownContent: "glimmaXY_dropdown-content",
             minExtentInput: "glimmaXY_min_extent_input",
             maxExtentInput: "glimmaXY_max_extent_input",
+            contrastInput: "glimmaXY_contrast_input",
+            // DATATABLES CLASSES
+            datatableButtonContainer: "dt-buttons",
         });
         const plotContainer = document.createElement("div");
         const controlContainer = document.createElement("div");
@@ -296,6 +301,31 @@ HTMLWidgets.widget({
                     controlContainer: data.controlContainer
                 });
                 SaveUtils.hideDropdownsOnHoverAway(data.controlContainer);
+                // setup interaction for changing contrasts
+                const contrastSelect = document.createElement("select");
+                contrastSelect.setAttribute('class', CLASSNAMES.contrastInput);
+                for (let i = 0; i < data.contrasts.length; i++) {
+                    const option = document.createElement('option');
+                    const value = new String(i).valueOf();
+                    option.value = value;
+                    option.innerHTML = value;
+                    contrastSelect.appendChild(option);
+                }
+                contrastSelect.addEventListener('change', (e) => {
+                    const i = new Number(e.target.value).valueOf();
+                    const selectedTable = (data.contrasts)[i];
+                    if (selectedTable) {
+                        // @ts-ignore
+                        const table = HTMLWidgets.dataframeToD3(selectedTable);
+                        data.xyView.data("source", table);
+                        data.xyView.runAsync();
+                        datatable.clear();
+                        datatable.rows.add(table);
+                        datatable.draw();
+                    }
+                });
+                const tableButtonContainer = data.controlContainer.getElementsByClassName(CLASSNAMES.datatableButtonContainer)[0];
+                tableButtonContainer.appendChild(contrastSelect);
             });
         }
         /**
@@ -426,7 +456,6 @@ HTMLWidgets.widget({
         ;
         return {
             renderValue: function (x) {
-                console.log(x);
                 // @ts-ignore
                 const handler = new vegaTooltip.Handler();
                 // create container elements
@@ -478,6 +507,7 @@ HTMLWidgets.widget({
                     xyView: xyView,
                     expressionView: expressionView,
                     xyTable: xyTable,
+                    contrasts: x.data.tables,
                     countsMatrix: countsMatrix,
                     controlContainer: controlContainer,
                     height: height,
