@@ -483,11 +483,46 @@ HTMLWidgets.widget({
       alertBox.classList.remove(CLASSNAMES.show);
     }
 
+    interface XYSchema {
+      data: {
+        // columns in the gene annotation
+        annoCols: string[] | -1,
+        // list of columns to display
+        cols: string[],
+        counts: {
+          [sample: string] : number[]
+        } | -1;
+        // column names from groups
+        expCols : string[],
+        // groups
+        groups: {
+          [property: string] : string[],
+        },
+        // levels
+        levels: string[] | undefined,
+        // custom colours for each sample
+        sampleColours: string[] | -1,
+        // column names from the counts matrix
+        samples: string[],
+        // custom colours for each
+        statusColours: string[],
+        // table to display at the bottom
+        table: {
+          [column: string] : (number | string)[]
+        },
+        // MA plot title
+        title: string,
+        // label for x-axis
+        x: string,
+        // label for y-axis
+        y: string,
+      }
+    };
+
     return {
 
-      renderValue: function(x: any) 
-      {
-        
+      renderValue: function(x: XYSchema) 
+      {        
         // @ts-ignore
         const handler = new vegaTooltip.Handler();
 

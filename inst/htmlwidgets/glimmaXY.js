@@ -423,6 +423,7 @@ HTMLWidgets.widget({
             }
             alertBox.classList.remove(CLASSNAMES.show);
         }
+        ;
         return {
             renderValue: function (x) {
                 // @ts-ignore
