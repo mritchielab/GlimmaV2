@@ -426,7 +426,6 @@ HTMLWidgets.widget({
         ;
         return {
             renderValue: function (x) {
-                console.log(x);
                 // @ts-ignore
                 const handler = new vegaTooltip.Handler();
                 // create container elements

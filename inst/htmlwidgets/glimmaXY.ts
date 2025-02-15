@@ -522,10 +522,7 @@ HTMLWidgets.widget({
     return {
 
       renderValue: function(x: XYSchema) 
-      {
-
-        console.log(x);
-        
+      {        
         // @ts-ignore
         const handler = new vegaTooltip.Handler();
 
