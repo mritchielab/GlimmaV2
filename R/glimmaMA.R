@@ -230,6 +230,7 @@ glimmaMA.MArrayLM <- function(
                           y=ylab,
                           table=tables[[1]],
                           tables=tables,
+                          titles=colnames(x),
                           cols=display.columns,
                           counts=counts,
                           groups=groups,

@@ -308,7 +308,7 @@ HTMLWidgets.widget({
                     const option = document.createElement('option');
                     const value = new String(i).valueOf();
                     option.value = value;
-                    option.innerHTML = value;
+                    option.innerHTML = data.titles[i];
                     contrastSelect.appendChild(option);
                 }
                 contrastSelect.addEventListener('change', (e) => {
@@ -514,6 +514,7 @@ HTMLWidgets.widget({
                     cols: x.data.cols,
                     groups: x.data.groups,
                     levels: x.data.levels,
+                    titles: x.data.titles,
                     expressionContainer: expressionContainer
                 };
                 setupXYInteraction(data);

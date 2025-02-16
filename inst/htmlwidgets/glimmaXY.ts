@@ -20,6 +20,7 @@ HTMLWidgets.widget({
       cols: any;
       groups: any;
       levels: any;
+      titles: string[];
     };
 
     interface VegaView {
@@ -370,7 +371,7 @@ HTMLWidgets.widget({
           const option = document.createElement('option');
           const value = new String(i).valueOf();
           option.value = value;
-          option.innerHTML = value;
+          option.innerHTML = data.titles[i];
           contrastSelect.appendChild(option);
       }
 
@@ -562,6 +563,7 @@ HTMLWidgets.widget({
         }[];
         // MA plot title
         title: string,
+        titles: string[],
         // label for x-axis
         x: string,
         // label for y-axis
@@ -649,6 +651,7 @@ HTMLWidgets.widget({
           cols: x.data.cols,
           groups: x.data.groups,
           levels: x.data.levels,
+          titles: x.data.titles,
           expressionContainer: expressionContainer
         } as RenderData;
 
