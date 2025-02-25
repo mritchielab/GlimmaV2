@@ -382,6 +382,8 @@ HTMLWidgets.widget({
           // @ts-ignore
           const table = HTMLWidgets.dataframeToD3(selectedTable);
           data.xyView.data("source", table);
+          const title = data.titles[i];
+          data.xyView.signal("title", title);
           data.xyView.runAsync();
           datatable.clear();
           datatable.rows.add(table);
@@ -584,7 +586,7 @@ HTMLWidgets.widget({
         plotContainer.appendChild(xyContainer);
 
         // @ts-ignore
-        const xyTable = HTMLWidgets.dataframeToD3(x.data.table);
+        const xyTable = HTMLWidgets.dataframeToD3(x.data.tables[0]);
         // @ts-ignore
         const xySpec = createXYSpec(x.data, xyTable, width, height);
         // @ts-ignore
