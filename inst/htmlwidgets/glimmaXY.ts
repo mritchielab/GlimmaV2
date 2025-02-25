@@ -1,10 +1,3 @@
-interface VegaView {
-  addSignalListener: any;
-  signal: any;
-  runAsync: any;
-  toImageURL: any;
-};
-
 // @ts-ignore
 HTMLWidgets.widget({
 
@@ -15,7 +8,31 @@ HTMLWidgets.widget({
   factory: function(el: any, width: number, height: number) 
   {
 
+    interface RenderData {
+      xyView: VegaView;
+      expressionView: VegaView;
+      xyTable: any;
+      contrasts: any[];
+      countsMatrix: any;
+      controlContainer: HTMLElement;
+      expressionContainer: HTMLElement;
+      height: number;
+      cols: any;
+      groups: any;
+      levels: any;
+      titles: string[];
+    };
+
+    interface VegaView {
+      addSignalListener: any;
+      signal: any;
+      runAsync: any;
+      toImageURL: any;
+      data: any;
+    };
+
     const CLASSNAMES = Object.freeze({
+      // GLIMMA CLASSES
       plotContainer: "glimmaXY_plotContainer",
       controlContainer: "glimmaXY_controlContainer",
       xyContainerSingle: "glimmaXY_xyContainerSingle",
@@ -40,6 +57,9 @@ HTMLWidgets.widget({
       dropdownContent: "glimmaXY_dropdown-content",
       minExtentInput: "glimmaXY_min_extent_input",
       maxExtentInput: "glimmaXY_max_extent_input",
+      contrastInput: "glimmaXY_contrast_input",
+      // DATATABLES CLASSES
+      datatableButtonContainer: "dt-buttons",
     });
 
     const plotContainer = document.createElement("div");
@@ -265,7 +285,7 @@ HTMLWidgets.widget({
      * Generates datatable DOM object, state machine and assigns event listeners
      * @param  {Data} data encapsulated data object containing references to Vega graphs and DOM elements
      */
-    function setupXYInteraction(data: any)
+    function setupXYInteraction(data: RenderData)
     {
 
       const state = new State(data);
@@ -343,6 +363,35 @@ HTMLWidgets.widget({
           controlContainer: data.controlContainer 
         });
         SaveUtils.hideDropdownsOnHoverAway(data.controlContainer);
+
+        // setup interaction for changing contrasts
+        const contrastSelect = document.createElement("select");
+        contrastSelect.setAttribute('class', CLASSNAMES.contrastInput);
+        for (let i = 0; i < data.contrasts.length; i++){
+          const option = document.createElement('option');
+          const value = new String(i).valueOf();
+          option.value = value;
+          option.innerHTML = data.titles[i];
+          contrastSelect.appendChild(option);
+      }
+
+      contrastSelect.addEventListener('change', (e: any) => {
+        const i = new Number(e.target.value).valueOf();
+        const selectedTable = (data.contrasts)[i];
+        if (selectedTable) {
+          // @ts-ignore
+          const table = HTMLWidgets.dataframeToD3(selectedTable);
+          data.xyView.data("source", table);
+          const title = data.titles[i];
+          data.xyView.signal("title", title);
+          data.xyView.runAsync();
+          datatable.clear();
+          datatable.rows.add(table);
+          datatable.draw();
+        }
+      });
+      const tableButtonContainer = data.controlContainer.getElementsByClassName(CLASSNAMES.datatableButtonContainer)[0];
+      tableButtonContainer.appendChild(contrastSelect);
       });
     }
 
@@ -510,8 +559,13 @@ HTMLWidgets.widget({
         table: {
           [column: string] : (number | string)[]
         },
+        // multiple contrasts that can be switched out
+        tables: {
+          [column: string] : (number | string)[]
+        }[];
         // MA plot title
         title: string,
+        titles: string[],
         // label for x-axis
         x: string,
         // label for y-axis
@@ -532,7 +586,7 @@ HTMLWidgets.widget({
         plotContainer.appendChild(xyContainer);
 
         // @ts-ignore
-        const xyTable = HTMLWidgets.dataframeToD3(x.data.table)
+        const xyTable = HTMLWidgets.dataframeToD3(x.data.tables[0]);
         // @ts-ignore
         const xySpec = createXYSpec(x.data, xyTable, width, height);
         // @ts-ignore
@@ -592,14 +646,16 @@ HTMLWidgets.widget({
           xyView: xyView,
           expressionView: expressionView,
           xyTable: xyTable,
+          contrasts: x.data.tables,
           countsMatrix: countsMatrix,
           controlContainer: controlContainer,
           height: height,
           cols: x.data.cols,
           groups: x.data.groups,
           levels: x.data.levels,
+          titles: x.data.titles,
           expressionContainer: expressionContainer
-        };
+        } as RenderData;
 
         setupXYInteraction(data);
         if (expressionView) {

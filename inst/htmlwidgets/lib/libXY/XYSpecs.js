@@ -25,13 +25,16 @@ function createXYSpec(xyData, xyTable, width, height)
     "padding": {"left": 0, "top": 0, "right": 0, "bottom": 5},
     "autosize": {"type": "fit", "resize": true},
     "title": {
-      "text": xyData.title
+      "text": { "signal": "title"}
     },
     "signals":
       [
         {
           "name": "click", "value": null,
           "on": [ {"events": "mousedown", "update": "[datum, now()]" } ]
+        },
+        {
+          "name": "title", "value": xyData.titles[0],
         }
       ],
     "data": 
