@@ -238,6 +238,15 @@ HTMLWidgets.widget({
             const datatableEl = document.createElement("TABLE");
             datatableEl.setAttribute("class", CLASSNAMES.datatable);
             data.controlContainer.appendChild(datatableEl);
+            const clearData = (datatable) => __awaiter(this, void 0, void 0, function* () {
+                state.graphMode = false;
+                state.selected = [];
+                datatable.rows(`.${CLASSNAMES.selected}`).nodes().to$().removeClass(CLASSNAMES.selected);
+                datatable.search('').columns().search('').draw();
+                data.xyView.data("selected_points", state.selected);
+                data.xyView.runAsync();
+                yield clearExpressionPlot(data);
+            });
             $(document).ready(function () {
                 // @ts-ignore
                 const datatable = $(datatableEl).DataTable({
@@ -255,15 +264,7 @@ HTMLWidgets.widget({
                         buttons: [
                             {
                                 text: 'Clear (0)',
-                                action: () => __awaiter(this, void 0, void 0, function* () {
-                                    state.graphMode = false;
-                                    state.selected = [];
-                                    datatable.rows(`.${CLASSNAMES.selected}`).nodes().to$().removeClass(CLASSNAMES.selected);
-                                    datatable.search('').columns().search('').draw();
-                                    data.xyView.data("selected_points", state.selected);
-                                    data.xyView.runAsync();
-                                    yield clearExpressionPlot(data);
-                                }),
+                                action: () => { clearData(datatable); },
                                 attr: { class: [CLASSNAMES.saveButtonBase, CLASSNAMES.clearButton].join(" ") }
                             },
                             {
@@ -311,10 +312,12 @@ HTMLWidgets.widget({
                     option.innerHTML = data.titles[i];
                     contrastSelect.appendChild(option);
                 }
-                contrastSelect.addEventListener('change', (e) => {
+                contrastSelect.addEventListener('change', (e) => __awaiter(this, void 0, void 0, function* () {
                     const i = new Number(e.target.value).valueOf();
                     const selectedTable = (data.contrasts)[i];
                     if (selectedTable) {
+                        // clear the plot
+                        clearData(datatable);
                         // @ts-ignore
                         const table = HTMLWidgets.dataframeToD3(selectedTable);
                         data.xyView.data("source", table);
@@ -325,7 +328,7 @@ HTMLWidgets.widget({
                         datatable.rows.add(table);
                         datatable.draw();
                     }
-                });
+                }));
                 const tableButtonContainer = data.controlContainer.getElementsByClassName(CLASSNAMES.datatableButtonContainer)[0];
                 tableButtonContainer.appendChild(contrastSelect);
             });
@@ -458,6 +461,9 @@ HTMLWidgets.widget({
         ;
         return {
             renderValue: function (x) {
+                if (!Array.isArray(x.data.titles)) {
+                    x.data.titles = [x.data.titles];
+                }
                 // @ts-ignore
                 const handler = new vegaTooltip.Handler();
                 // create container elements

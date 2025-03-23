@@ -293,6 +293,16 @@ HTMLWidgets.widget({
       datatableEl.setAttribute("class", CLASSNAMES.datatable);
       data.controlContainer.appendChild(datatableEl);
 
+      const clearData = async (datatable: any) => {
+        state.graphMode = false;
+        state.selected = [];
+        datatable.rows(`.${CLASSNAMES.selected}`).nodes().to$().removeClass(CLASSNAMES.selected);
+        datatable.search('').columns().search('').draw();       
+        data.xyView.data("selected_points", state.selected);
+        data.xyView.runAsync();
+        await clearExpressionPlot(data);
+      }
+
       $(document).ready(function() 
       {
         // @ts-ignore
@@ -312,15 +322,7 @@ HTMLWidgets.widget({
               buttons: [
                         {
                           text: 'Clear (0)',
-                          action: async () => {
-                            state.graphMode = false;
-                            state.selected = [];
-                            datatable.rows(`.${CLASSNAMES.selected}`).nodes().to$().removeClass(CLASSNAMES.selected);
-                            datatable.search('').columns().search('').draw();       
-                            data.xyView.data("selected_points", state.selected);
-                            data.xyView.runAsync();
-                            await clearExpressionPlot(data);
-                          },
+                          action: () => { clearData(datatable) },
                           attr: {class: [ CLASSNAMES.saveButtonBase, CLASSNAMES.clearButton].join(" ")}
                         },
                         { 
@@ -375,10 +377,12 @@ HTMLWidgets.widget({
           contrastSelect.appendChild(option);
       }
 
-      contrastSelect.addEventListener('change', (e: any) => {
+      contrastSelect.addEventListener('change', async (e: any) => {
         const i = new Number(e.target.value).valueOf();
         const selectedTable = (data.contrasts)[i];
         if (selectedTable) {
+          // clear the plot
+          clearData(datatable);
           // @ts-ignore
           const table = HTMLWidgets.dataframeToD3(selectedTable);
           data.xyView.data("source", table);
@@ -555,16 +559,11 @@ HTMLWidgets.widget({
         samples: string[],
         // custom colours for each
         statusColours: string[],
-        // table to display at the bottom
-        table: {
-          [column: string] : (number | string)[]
-        },
         // multiple contrasts that can be switched out
         tables: {
           [column: string] : (number | string)[]
         }[];
         // MA plot title
-        title: string,
         titles: string[],
         // label for x-axis
         x: string,
@@ -577,6 +576,10 @@ HTMLWidgets.widget({
 
       renderValue: function(x: XYSchema) 
       {        
+        if (!Array.isArray(x.data.titles)) {
+          x.data.titles = [x.data.titles];
+        }
+        
         // @ts-ignore
         const handler = new vegaTooltip.Handler();
 

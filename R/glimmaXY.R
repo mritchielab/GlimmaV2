@@ -178,7 +178,8 @@ buildXYData <- function(
 
   xData <- list(data=list(x=xlab,
                           y=ylab,
-                          table=table,
+                          tables=list(table),
+                          titles=list(main),
                           cols=display.columns,
                           counts=counts,
                           groups=groups,
@@ -187,8 +188,8 @@ buildXYData <- function(
                           annoCols= if (is.null(anno)) {-1} else {colnames(anno)},
                           statusColours=status.cols,
                           sampleColours= if (is.null(sample.cols)) {-1} else {sample.cols},
-                          samples=colnames(counts),
-                          title=main))
+                          samples=colnames(counts)
+                          ))
   return(xData)
 }
 

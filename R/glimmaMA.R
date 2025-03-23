@@ -132,16 +132,30 @@ glimmaMA.MArrayLM <- function(
   }
 
   transform.counts <- match.arg(transform.counts)
-  # check if the number of rows of x and the dge object are equal
-  if (!is.null(dge) && nrow(x) != nrow(dge)) stop("MArrayLM object must have equal rows/genes to DGEList.")
+  # check that the number of genes of x and the dge object are equal
+  if (!is.null(dge) && nrow(x) != nrow(dge)) stop("MArrayLM object must have equal genes to DGEList.")
 
-  # create initial table with logCPM and logFC features
+  # create initial table with the following features:
+  # - logCPM 
+  # - logFC
+  # - P values
+  # - Adjusted P values
+  # - gene
+  # - status
+  # - annotation columns (optional, user-provided)
+  # - index column
   create_table <- function(coef) {
-    table <- data.frame(signif(unname(x$Amean), digits=4),
-                        signif(unname(x$coefficients[, coef]), digits=4))
+    # unname gets rid of gene names, creating an indexed vector
+    logcpm <- unname(x$Amean)
+    logfc <- unname(x$coefficients[, coef])
+    table <- data.frame(signif(logcpm, digits=4),
+                        signif(logfc, digits=4))
     names(table) <- c(xlab, ylab)
+    # add P values to table
+    PValue <- signif(x$p.value[, coef], digits=4)
     AdjPValue <- signif(stats::p.adjust(x$p.value[, coef], method=p.adj.method), digits=4)
-    table <- cbind(table, PValue=signif(x$p.value[, coef], digits=4), AdjPValue=AdjPValue)
+    table <- cbind(table, PValue=PValue, AdjPValue=AdjPValue)
+    # use user-provided gene column in annotations; otherwise use rownames from the limma object
     if (!any(colnames(anno) == "gene")) {
       table <- cbind(gene=rownames(x), table)
     } else {
@@ -151,31 +165,36 @@ glimmaMA.MArrayLM <- function(
     }
     if (is.matrix(status)) status <- status[, coef]
     # transform status column to (downReg, nonDE, upReg)
-    status <- sapply(status, function (x) {
-      switch(as.character(x), "-1"="downReg", "0"="nonDE", "1"="upReg")
+    status <- sapply(status, function (value) {
+      switch(as.character(value), "-1"="downReg", "0"="nonDE", "1"="upReg")
     })
-    if (length(status)!=nrow(table)) stop("Status vector
+    if (length(status) != nrow(table)) stop("Status vector
       must have the same number of genes as the main arguments.")
     table <- cbind(table, status=as.vector(status))
     if (!is.null(anno))
     {
       table <- cbind(table, anno)
     }
-    table <- data.frame(index=0:(nrow(table)-1), table)
+    index <- 0:(nrow(table)-1)
+    table <- data.frame(index, table)
     return(table)
   }
+
+  # create a list of tables for every coefficient
+  tables <- lapply(1:ncol(x), function (coef) {
+    create_table(coef)
+  })
 
   # preprocess counts
   if (is.null(counts)) {
     counts <- -1
     level <- NULL
   } else {
-    # df format for serialisation
     if (transform.counts != "none") {
+      # check that counts are all integers
       if (!isTRUE(all.equal(counts, round(counts)))) {
         warning("count transform requested but not all count values are integers.")
       }
-
       if (transform.counts == "logcpm") {
         counts <- edgeR::cpm(counts, log=TRUE)
       } else if (transform.counts == "cpm") {
@@ -197,8 +216,8 @@ glimmaMA.MArrayLM <- function(
       }
     }
 
+    # df format for serialisation
     counts <- data.frame(counts)
-    #if (is.null(groups)) stop("If counts arg is supplied, groups arg must be non-null.")
     if (is.null(groups)) {
       groups <- factor("group")
     } else {
@@ -209,10 +228,6 @@ glimmaMA.MArrayLM <- function(
     groups <- data.frame(group=groups)
     groups <- cbind(groups, sample=colnames(counts))
   }
-
-  tables <- lapply(1:ncol(x), function (coef) {
-    create_table(coef)
-  })
 
   if (is.null(display.columns)) {
     display.columns <- colnames(tables[[1]])
@@ -228,7 +243,6 @@ glimmaMA.MArrayLM <- function(
 
   xData <- list(data=list(x=xlab,
                           y=ylab,
-                          table=tables[[1]],
                           tables=tables,
                           titles=colnames(x),
                           cols=display.columns,
@@ -239,8 +253,8 @@ glimmaMA.MArrayLM <- function(
                           annoCols= if (is.null(anno)) {-1} else {colnames(anno)},
                           statusColours=status.cols,
                           sampleColours= if (is.null(sample.cols)) {-1} else {sample.cols},
-                          samples=colnames(counts),
-                          title=main))
+                          samples=colnames(counts)
+                          ))
   return(glimmaXYWidget(xData, width, height, html))
 }
 
