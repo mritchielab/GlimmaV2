@@ -176,6 +176,7 @@ buildXYData <- function(
   if (length(status.cols) != 3) stop("status.cols
           arg must have exactly 3 elements for [downreg, notDE, upreg]")
 
+  # must match schema in glimmaXY.ts (XYSchema)
   xData <- list(data=list(x=xlab,
                           y=ylab,
                           tables=list(table),
