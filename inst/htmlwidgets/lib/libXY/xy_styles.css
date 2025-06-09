@@ -37,12 +37,11 @@
 
 .glimmaXY_save-button {
     box-sizing: border-box;
-    padding: 0.3em 0.5em;
+	padding: 0.3em 0.5em;
     font-size: 9pt;
     border: 1px solid #e0e0e0;
     border-radius: 3px;
     cursor: pointer;
-    line-height: 1.6em;
     color: #505050;
     white-space: nowrap;
     overflow: hidden;
@@ -141,4 +140,24 @@
 .glimmaXY_expressionControls {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.glimmaXY_contrast_input {
+	padding: 0.3em 0.5em;
+	border: 1px solid #e0e0e0;
+	border-radius: 3px;
+	font-size: 9pt;
+	font-family: sans-serif;
+	color: #505050;
+}
+
+/* due to a bug in Vega we can't give a class to the jitter
+   input - I think b/c it's a range input - and so we have to
+   style it manually */
+input[name="jitter"] {
+	width: 95%;
+}
+
+input[name="jitter"] + label {
+	display: none;
 }
