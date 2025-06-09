@@ -7,11 +7,12 @@
 	display: block;
 }
 
-.vega-bind select {
+.vega-bind select, .vega-bind input {
     display: block;
     width: 90%;
-	border: 1px solid #b5b5b5;
-	border-radius: 4px;
-	font-size: 10pt;
+	border: 1px solid #e0e0e0;
+	border-radius: 3px;
+	font-size: 9pt;
 	font-family: sans-serif;
+	color: #505050;
 }
