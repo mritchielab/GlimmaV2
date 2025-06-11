@@ -74,21 +74,131 @@ glimmaVolcano.MArrayLM <- function(
   if (!is.null(dge) && nrow(x) != nrow(dge)) stop("MArrayLM object must have equal rows/genes to DGEList.")
 
   transform.counts <- match.arg(transform.counts)
-  table <- data.frame(signif(unname(x$coefficients[, coef]), digits=4),
-                      signif( -log10(x$p.value[, coef]), digits=4))
-  colnames(table) <- c(xlab, ylab)
-  logCPM <- signif(unname(x$Amean), digits=4)
-  AdjPValue <- signif(stats::p.adjust(x$p.value[, coef], method=p.adj.method), digits=4)
-  table <- cbind(table, logCPM=logCPM, AdjPValue=AdjPValue)
-  if (!any(colnames(anno) == "gene")) {
-    table <- cbind(gene=rownames(x), table)
-  } else {
-    table <- cbind(gene=anno$gene, table)
-    table$gene[is.na(table$gene)] <- "N/A"
-    anno$gene <- NULL
+
+  # create initial table with the following features:
+  # - logFC (x axis)
+  # - -log10(PValue) (y axis)
+  # - logCPM
+  # - Adjusted P values
+  # - gene
+  # - status
+  # - annotation columns (optional, user-provided)
+  # - index column
+  create_table <- function(coef) {
+    # unname gets rid of gene names, creating an indexed vector
+    logfc <- unname(x$coefficients[, coef])  # x axis
+    negLog10PValue <- -log10(x$p.value[, coef]) # y axis
+  
+    table <- data.frame(signif(logfc, digits=4),
+                        signif(negLog10PValue, digits=4))
+    names(table) <- c(xlab, ylab)
+    # add adjusted P value and logcpm to the table
+    logcpm <- signif(unname(x$Amean), digits=4)
+    AdjPValue <- signif(stats::p.adjust(x$p.value[, coef], method=p.adj.method), digits=4)
+    table <- cbind(table, logCPM=logcpm, AdjPValue=AdjPValue)
+    # use user-provided gene column in annotations; otherwise use rownames from the limma object
+    if (!any(colnames(anno) == "gene")) {
+      table <- cbind(gene=rownames(x), table)
+    } else {
+      table <- cbind(gene=anno$gene, table)
+      table$gene[is.na(table$gene)] <- "N/A"
+      anno$gene <- NULL
+    }
+    if (is.matrix(status)) status <- status[, coef]
+    # transform status column to (downReg, nonDE, upReg)
+    status <- sapply(status, function (value) {
+      switch(as.character(value), "-1"="downReg", "0"="nonDE", "1"="upReg")
+    })
+    if (length(status) != nrow(table)) stop("Status vector
+      must have the same number of genes as the main arguments.")
+    table <- cbind(table, status=as.vector(status))
+    if (!is.null(anno))
+    {
+      table <- cbind(table, anno)
+    }
+    index <- 0:(nrow(table)-1)
+    table <- data.frame(index, table)
+    return(table)
   }
-  if (is.matrix(status)) status <- status[, coef]
-  xData <- buildXYData(table, status, main, display.columns, anno, counts, xlab, ylab, status.cols, sample.cols, groups, transform.counts)
+
+  # create a list of tables for every coefficient
+  tables <- lapply(1:ncol(x), function (coef) {
+    create_table(coef)
+  })
+
+  # preprocess counts
+  if (is.null(counts)) {
+    counts <- -1
+    level <- NULL
+  } else {
+    if (transform.counts != "none") {
+      # check that counts are all integers
+      if (!isTRUE(all.equal(counts, round(counts)))) {
+        warning("count transform requested but not all count values are integers.")
+      }
+      if (transform.counts == "logcpm") {
+        counts <- edgeR::cpm(counts, log=TRUE)
+      } else if (transform.counts == "cpm") {
+        counts <- edgeR::cpm(counts, log=FALSE)
+      } else if (transform.counts == "rpkm" || transform.counts == "logrpkm") {
+        if (is.null(anno$length)) {
+          stop("no 'length' column in gene annotation, rpkm cannot be computed")
+        }
+
+        if (!is.numeric(anno$length)) {
+          stop("'length' column of gene annotation must be numeric values")
+        }
+
+        if (transform.counts == "rpkm") {
+          counts <- edgeR::rpkm(counts, gene.length = anno$length)
+        } else {
+          counts <- edgeR::rpkm(counts, gene.length = anno$length, log = TRUE)
+        }
+      }
+    }
+
+    # df format for serialisation
+    counts <- data.frame(counts)
+    if (is.null(groups)) {
+      groups <- factor("group")
+    } else {
+      if (ncol(counts) != length(groups)) stop("Length of groups must be equal to the number of columns in counts.\n")
+    }
+
+    level <- levels(groups)
+    groups <- data.frame(group=groups)
+    groups <- cbind(groups, sample=colnames(counts))
+  }
+
+  if (is.null(display.columns)) {
+    display.columns <- colnames(tables[[1]])
+  } else {
+    # if it's specified, make sure at least x, y, gene are displayed in the table and tooltips
+    if (!(xlab %in% display.columns)) display.columns <- c(display.columns, xlab)
+    if (!(ylab %in% display.columns)) display.columns <- c(display.columns, ylab)
+    if (!("gene" %in% display.columns)) display.columns <- c("gene", display.columns)
+  }
+  # index shouldn't be shown in display.columns
+  display.columns <- setdiff(display.columns, "index")
+
+  if (length(status.cols) != 3) stop("status.cols
+          arg must have exactly 3 elements for [downreg, notDE, upreg]")
+
+  # must match schema in glimmaXY.ts (XYSchema)
+  xData <- list(data=list(x=xlab,
+                          y=ylab,
+                          tables=tables,
+                          titles=colnames(x),
+                          cols=display.columns,
+                          counts=counts,
+                          groups=groups,
+                          levels=level,
+                          expCols=colnames(groups),
+                          annoCols= if (is.null(anno)) {-1} else {colnames(anno)},
+                          statusColours=status.cols,
+                          sampleColours= if (is.null(sample.cols)) {-1} else {sample.cols},
+                          samples=colnames(counts)
+                          ))
   return(glimmaXYWidget(xData, width, height, html))
 }
 
