@@ -372,7 +372,7 @@ HTMLWidgets.widget({
                 data.xyView.data("selected_points", state.selected);
                 data.xyView.runAsync();
                 datatable.search('').columns().search('').draw();
-                const regex_search = state.selected.map(x => '^' + x.index + '$').join('|');
+                const regex_search = state.selected.map(x => '^' + x.gene + '$').join('|');
                 // search options: { regex: true, smart: false }
                 datatable.columns(0).search(regex_search, true, false).draw();
             });

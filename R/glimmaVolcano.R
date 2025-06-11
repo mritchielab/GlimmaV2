@@ -178,6 +178,8 @@ glimmaVolcano.MArrayLM <- function(
     if (!(ylab %in% display.columns)) display.columns <- c(display.columns, ylab)
     if (!("gene" %in% display.columns)) display.columns <- c("gene", display.columns)
   }
+  # index shouldn't be shown in display.columns
+  display.columns <- setdiff(display.columns, "index")
 
   if (length(status.cols) != 3) stop("status.cols
           arg must have exactly 3 elements for [downreg, notDE, upreg]")
