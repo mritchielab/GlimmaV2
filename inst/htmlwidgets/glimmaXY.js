@@ -17,6 +17,7 @@ HTMLWidgets.widget({
         ;
         const CLASSNAMES = Object.freeze({
             // GLIMMA CLASSES
+            widgetElement: "glimmaXY_widgetElement",
             plotContainer: "glimmaXY_plotContainer",
             controlContainer: "glimmaXY_controlContainer",
             xyContainerSingle: "glimmaXY_xyContainerSingle",
@@ -52,6 +53,7 @@ HTMLWidgets.widget({
         const widget = document.getElementById(el.id);
         widget === null || widget === void 0 ? void 0 : widget.appendChild(plotContainer);
         widget === null || widget === void 0 ? void 0 : widget.appendChild(controlContainer);
+        widget === null || widget === void 0 ? void 0 : widget.classList.add(CLASSNAMES.widgetElement);
         class State {
             /**
              * Returns state machine object retaining the current set of selected genes and managing

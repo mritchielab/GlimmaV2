@@ -1,3 +1,15 @@
+/*
+ * Essentially want to render:
+ * | Plot row  |
+ * | Table row |
+ * Where each row takes up the full
+ * available width
+ */
+.glimmaXY_widgetElement {
+	display: grid;
+	grid-template-columns: 1fr;
+}
+
 .glimmaXY_plotContainer {
 	display: inline-grid;
 	grid-column-gap: 2rem;
