@@ -33,6 +33,7 @@ HTMLWidgets.widget({
 
     const CLASSNAMES = Object.freeze({
       // GLIMMA CLASSES
+      widgetElement: "glimmaXY_widgetElement",
       plotContainer: "glimmaXY_plotContainer",
       controlContainer: "glimmaXY_controlContainer",
       xyContainerSingle: "glimmaXY_xyContainerSingle",
@@ -70,6 +71,7 @@ HTMLWidgets.widget({
     const widget = document.getElementById(el.id);
     widget?.appendChild(plotContainer);
     widget?.appendChild(controlContainer);
+    widget?.classList.add(CLASSNAMES.widgetElement);
 
     // vega datum
     interface Datum {
