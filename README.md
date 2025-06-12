@@ -14,17 +14,31 @@ Glimma 2,0 is an interactive R widget for creating plots for differential expres
 
 Feedback is welcome, please feel free to open an issue for any enhancements you would like to see in future.
 ## *glimmaMA*: MA plot
-![MA plot](https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/maplot.gif "MA Plot")
+<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/MA.gif" width="900px"/>'
+
 ## *glimmaVolcano*: Volcano plot
-![Volcano plot](https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/volcano_plot.gif "Volcano Plot")
+<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/volcano.gif" width="900px"/>
+
 ## *glimmaMDS*: Multidimensional scaling plot
-![MDS plot](https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/MDS_numeric.gif "MDS Plot")
+<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/MDS.png" width="900px"/>
+
 ## Installation
 You can install the development version of GlimmaV2 using devtools from the R command line.
 ```R
-devtools::install_github("hasaru-k/GlimmaV2")
+devtools::install_github("mritchielab/GlimmaV2")
 ```
-## Options
+## Features
+
+### Expression plot controls
+
+You can **fix** the **y-axis** when switching between genes by specifying ```Y min``` and ```Y max``` values:
+
+<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/axis.gif" width="500px"/>
+
+**Jitter** can also be interactively applied when samples are overlying each other:
+
+<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/jitter.gif" width="500px"/>
+
 ### Plot Colouring (MA/Volcano/XY)
 The default mapping between the status vector and color of the gene is given below:
 ```
@@ -68,14 +82,6 @@ If more flexibility is required (ex. varying the background colour, whether or n
 glMA <- glimmaMA(fit, dge=rnaseq)
 htmlwidgets::saveWidget(glMA, file="glimmaV2Example.html")
 ```
-
-### Fixing Expression Y-Axis (MA/Volcano/XY)
-
-GlimmaV2 automatically rescales the y-axis of the expression plot depending on which gene is currently selected. This can make it difficult to compare the expression of different genes. In order to fix the y-axis when selecting between multiple genes, you can specify a maximum y-value in the ```max_y_axis``` input form.
-
-| Rescaling Axis  | Fixed Axis |
-| ------------- | ------------- |
-| ![](https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/unfixed_axis.gif "")  | ![](https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/fix_axis.gif "")  |
 
 ### Sizing
 The width and height parameters can be adjusted to change the dimensions of the widget in pixels in the RStudio viewer and in knitted HTML:
