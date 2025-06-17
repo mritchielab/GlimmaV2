@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/hasaru-k/GlimmaV2.svg?branch=master)](https://travis-ci.org/hasaru-k/GlimmaV2)
 [![codecov](https://codecov.io/gh/hasaru-k/GlimmaV2/branch/master/graph/badge.svg)](https://codecov.io/gh/hasaru-k/GlimmaV2)
 # 
-Glimma 2,0 is an interactive R widget for creating plots for differential expression analysis, created using the [Vega](https://vega.github.io/vega/) and [htmlwidgets](https://www.htmlwidgets.org/) frameworks. It's an update/reimplementation of [Glimma 1.0](https://github.com/Shians/Glimma)! New features include:
+Glimma 2.0 is an interactive R widget for creating plots for differential expression analysis, created using the [Vega](https://vega.github.io/vega/) and [htmlwidgets](https://www.htmlwidgets.org/) frameworks. It's an update/reimplementation of [Glimma 1.0](https://github.com/Shians/Glimma)! New features include:
 - 🧬 multiple gene selections
 - 📓 full integration with R markdown
 - 🖼 exporting plots to PNG/SVG/CSV formats
@@ -13,14 +13,12 @@ Glimma 2,0 is an interactive R widget for creating plots for differential expres
 #### Available on [Bioconductor](https://bioconductor.org/packages/release/bioc/html/Glimma.html).
 
 Feedback is welcome, please feel free to open an issue for any enhancements you would like to see in future.
-## *glimmaMA*: MA plot
-<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/MA.gif" width="900px"/>'
 
-## *glimmaVolcano*: Volcano plot
-<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/volcano.gif" width="900px"/>
-
-## *glimmaMDS*: Multidimensional scaling plot
-<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/MDS.png" width="900px"/>
+| Function | Example |
+| ------------- | ------------- |
+| **glimmaMA**: _MA plot_ | <img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/MA.gif" /> |
+| **glimmaVolcano**: _Volcano plot_ | <img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/volcano.gif"/> |
+| **glimmaMDS**: _Multidimensional scaling plot_ | <img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/MDS.png"/> |
 
 ## Installation
 You can install the development version of GlimmaV2 using devtools from the R command line.
