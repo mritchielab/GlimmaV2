@@ -7,7 +7,8 @@
 # 
 Glimma 2.0 is an interactive R widget for creating plots for differential expression analysis, created using the [Vega](https://vega.github.io/vega/) and [htmlwidgets](https://www.htmlwidgets.org/) frameworks. It's an update/reimplementation of [Glimma 1.0](https://github.com/Shians/Glimma)! New features include:
 - 🧬 multiple gene selections
-- 📓 full integration with R markdown
+- 📓 full integration with Quarto and R markdown
+- 🎨 support for interactive switching between contrasts in limma-style objects
 - 🖼 exporting plots to PNG/SVG/CSV formats
 
 #### Available on [Bioconductor](https://bioconductor.org/packages/release/bioc/html/Glimma.html).
@@ -27,15 +28,16 @@ devtools::install_github("mritchielab/GlimmaV2")
 ```
 ## Features
 
+### Multiple contrast selection
+
+You now can interactively switch between multiple contrasts within _limma_ style objects:
+<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/contrasts.gif" width="600px"/>
+
 ### Expression plot controls
 
-You can **fix** the **y-axis** when switching between genes by specifying ```Y min``` and ```Y max``` values:
-
-<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/axis.gif" width="500px"/>
-
-**Jitter** can also be interactively applied when samples are overlying each other:
-
-<img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/jitter.gif" width="500px"/>
+| Y-axis | Jitter |
+| ------------- | ------------- |
+| You can **fix** the **y-axis** when switching between genes by specifying ```Y min``` and ```Y max``` values: <img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/axis.gif"/> | Jitter can be interactively applied when samples are overlying each other: <img src="https://github.com/hasaru-k/GlimmaV2-docs/blob/master/documentation/jitter.gif"/> |
 
 ### Plot Colouring (MA/Volcano/XY)
 The default mapping between the status vector and color of the gene is given below:
