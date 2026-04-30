@@ -1,5 +1,5 @@
 context("Test MD Plot")
-library("pryr")
+library("purrr")
 
 test_that("id.column deprecation warning works", {
     temp_dir <- normalizePath(tempdir())
@@ -32,7 +32,7 @@ test_that("MD Plot runs for DGELRT", {
     expect_warning(glMDPlot(qlf, counts=counts, main="MDPlot", launch=FALSE, path = temp_dir))
 
     # common arguments for working tests
-    glMDPlot_core <- pryr::partial(
+    glMDPlot_core <- purrr::partial(
         glMDPlot,
         x = qlf,
         anno = geneanno,
@@ -46,7 +46,7 @@ test_that("MD Plot runs for DGELRT", {
     expect_silent(glMDPlot_core(side.xlab="foo", side.ylab="bar"))
 
     # add counts
-    glMDPlot_with_counts <- pryr::partial(
+    glMDPlot_with_counts <- purrr::partial(
         glMDPlot_core,
         count = counts
     )
@@ -70,7 +70,7 @@ test_that("MD Plot runs for DGEExact", {
     display.columns <- c("Symbols", "GeneID")
 
     # common arguments for working tests
-    glMDPlot_core <- pryr::partial(
+    glMDPlot_core <- purrr::partial(
         glMDPlot,
         x = et,
         main = "MDPlot",
@@ -83,7 +83,7 @@ test_that("MD Plot runs for DGEExact", {
     expect_silent(glMDPlot_core(side.xlab="foo", side.ylab="bar"))
 
     # add counts
-    glMDPlot_with_counts_samples_status <- pryr::partial(
+    glMDPlot_with_counts_samples_status <- purrr::partial(
         glMDPlot_core,
         count = counts,
         samples = 1:6,
@@ -102,7 +102,7 @@ test_that("MD Plot runs for MArrayLM", {
     display.columns <- c("Symbols", "GeneID")
 
     # common arguments for warning tests
-    glMDPlot_warning <- pryr::partial(
+    glMDPlot_warning <- purrr::partial(
         glMDPlot,
         x = fit,
         counts = counts,
@@ -114,7 +114,7 @@ test_that("MD Plot runs for MArrayLM", {
     expect_warning(glMDPlot_warning(status=is.de))
 
     # common arguments for working tests
-    glMDPlot_core <- pryr::partial(
+    glMDPlot_core <- purrr::partial(
         glMDPlot,
         x = fit,
         anno = geneanno,
@@ -143,7 +143,7 @@ test_that("MD Plot runs for DESeqDataSet", {
     load("test-v1_data_DESeqDataSet.RData")
 
     # common arguments for working tests
-    glMDPlot_core <- pryr::partial(
+    glMDPlot_core <- purrr::partial(
         glMDPlot,
         x = lymphoma_dds,
         anno = lymphoma_anno,
@@ -156,7 +156,7 @@ test_that("MD Plot runs for DESeqDataSet", {
     expect_silent(glMDPlot_core(samples=1:7, status=lymphoma_status))
 
     # common arguments for working tests
-    glMDPlot_deseqresults <- pryr::partial(
+    glMDPlot_deseqresults <- purrr::partial(
         glMDPlot,
         x = DESeq2::results(lymphoma_dds),
         counts = DESeq2::counts(lymphoma_dds),
