@@ -322,6 +322,7 @@ HTMLWidgets.widget({
                         clearData(datatable);
                         // @ts-ignore
                         const table = HTMLWidgets.dataframeToD3(selectedTable);
+                        data.xyTable = table;
                         data.xyView.data("source", table);
                         const title = data.titles[i];
                         data.xyView.signal("title", title);
